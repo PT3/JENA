@@ -6,7 +6,6 @@ import java.net.*;
 /* class client , gère la connexion de l'utilisateur*/
 public class Client 
 {
-		
 	private Socket socket;
         private BufferedReader in;      // Receveur
         private PrintWriter out;        // Envoyeur
