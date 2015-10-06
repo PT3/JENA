@@ -1,3 +1,5 @@
+package affichage;
+
 import javax.swing.*;
 
 import java.awt.*;
@@ -24,19 +26,19 @@ public class testlayout extends JFrame implements ActionListener , KeyListener
 	
 	public testlayout()
 	{
-		//DÈfinition du onlinePanel
+		//D√©finition du onlinePanel
 		onlinePanel = new JPanel(new FlowLayout());
 		onlinePanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		onlinePanel.setPreferredSize(new Dimension(150,0));
 		onlinePanel.setBackground(Color.red);
 		
-		//DÈfinition du chatPanel
+		//D√©finition du chatPanel
 		chatPanel= new JPanel();
 		chatPanel.setPreferredSize(new Dimension(350, 400));
 		chatPanel.setBackground(Color.green);
 		topPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,onlinePanel, chatPanel);
 		
-		//DÈfinition du userPanel
+		//D√©finition du userPanel
 		userPanel= new JPanel(new FlowLayout());
 		userText = new JTextArea(5,50);//Hauteur puis Largeur
 		userText.setBackground(Color.black);
@@ -44,7 +46,7 @@ public class testlayout extends JFrame implements ActionListener , KeyListener
 		userPanel.add(scrollPane);
 		userPanel.setBackground(Color.blue);
 		
-		//DÈfinition des Listener
+		//D√©finition des Listener
 		userText.addKeyListener(this);
 
 		//ajout dans le mainPanel
@@ -80,25 +82,25 @@ public class testlayout extends JFrame implements ActionListener , KeyListener
 		});
 	}
 	
-	/*MÈthode main*/
+	/*M√©thode main*/
 	public static void main(String[] args) 
 	{
 		testlayout frame = new testlayout();
 	}
 	
-	/*MÈthode permettant d'Èxecuter une action lorsqu'on appuie sur le bouton envoyer*/
+	/*M√©thode permettant d'√©xecuter une action lorsqu'on appuie sur le bouton envoyer*/
 	public void actionPerformed(ActionEvent e) 
 	{
 		userText.setText("test");
 	}
 	
-	/* MÈthode permettant d'Èxecuter une action lorsqu'on tape la touche ENTER */
+	/* M√©thode permettant d'√©xecuter une action lorsqu'on tape la touche ENTER */
     public void keyTyped(KeyEvent e) 
     {
     	
     }
     
-	/* MÈthode permettant d'Èxecuter une action lorsqu'on presse la touche ENTER */
+	/* M√©thode permettant d'√©xecuter une action lorsqu'on presse la touche ENTER */
 	public void keyPressed(KeyEvent e) 
 	{
 		if(e.getKeyCode()==KeyEvent.VK_SHIFT)
@@ -128,7 +130,7 @@ public class testlayout extends JFrame implements ActionListener , KeyListener
 		}*/
 	}
 	
-	/* MÈthode permettant d'Èxecuter une action lorsqu'on rel‚che la touche ENTER */
+	/* M√©thode permettant d'√©xecuter une action lorsqu'on rel√¢che la touche ENTER */
 	public void keyReleased(KeyEvent e) 
 	{
 	
