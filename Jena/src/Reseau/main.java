@@ -1,4 +1,4 @@
-package Reseau;
+package reseau;
 
 import java.net.*;
 import java.util.Scanner;
