@@ -4,6 +4,7 @@
 * @Date:    026/05/2015
 */
 
+package affichage;
 import java.awt.*;
 
 import javax.swing.*;
