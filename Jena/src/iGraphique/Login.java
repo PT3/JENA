@@ -53,6 +53,7 @@ public class Login extends JFrame implements ActionListener
 		b_inscription = new JButton("Inscription");
 		b_inscription.addActionListener(this);
 		b_invite = new JButton("Invité");
+		b_invite.addActionListener(this);
 		lLogin = new JLabel("Login(*)");
 		lPassword = new JLabel("Password(*)");
 		tfLogin = new JTextField("Obligatoire",20);
@@ -101,7 +102,15 @@ public class Login extends JFrame implements ActionListener
 	        /**
 	         * Si la source est le bouton d'inscription, on va sur la fenetre de chat principale
 	         */
-	        if (source == b_inscription){
+	        if (source == b_inscription)
+	        {
+	        	Inscription i = new Inscription(500,500);
+	        	i.setVisible(true);
+	        	this.setVisible(false);
+	        }
+	        else if(source==b_invite)
+	        {
+	        	System.out.println("PROUT");
 	        	Principale p = new Principale(500,500);
 	        	p.setVisible(true);
 	        	this.setVisible(false);
