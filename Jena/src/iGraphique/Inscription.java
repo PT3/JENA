@@ -16,7 +16,8 @@ import javax.swing.*;
 public class Inscription extends JFrame implements ActionListener
 {
 	private JPanel mainPanel,inscriptionPanel;
-	private JTextField tfLogin, tfPassword,tfConfirmPassword,tfEmail;
+	private JTextField tfLogin,tfEmail;
+	private JPasswordField tfPassword,tfConfirmPassword;
 	private JLabel lLogin,lPassword,lConfirmPassword,lEmail;
 	private JButton bValider;
 	
@@ -30,8 +31,8 @@ public class Inscription extends JFrame implements ActionListener
 		lConfirmPassword = new JLabel("Confirm Password(*)");
 		lEmail = new JLabel("Email :");
 		tfLogin = new JTextField("",20);
-		tfPassword = new JTextField("",20);
-		tfConfirmPassword = new JTextField("",20);
+		tfPassword = new JPasswordField(20);
+		tfConfirmPassword = new JPasswordField(20);
 		tfEmail = new JTextField("",20);
 		
 		bValider = new JButton("Valider");
