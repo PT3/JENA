@@ -44,8 +44,12 @@ public class ChatServeur implements Runnable {
             Thread tEmiss = new Thread(new Emission(out));
             tEmiss.start();
             
-        }catch (IOException e)
-        {System.err.println(login + " a été déconnecté ");}
+        }
+        catch (IOException e)
+        {
+        	// Si la connexion client est perdu on affiche un message d'erreur
+        	System.err.println(login + " a été déconnecté ");
+        }
         
     }
 }
