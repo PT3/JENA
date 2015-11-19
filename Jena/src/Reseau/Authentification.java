@@ -45,12 +45,12 @@ public class Authentification implements Runnable
             {
 
              	// Placement de la demande de login dans le buffer
-                out.print("Entrez votre login : ");
+                out.println("Entrez votre login : ");
                 out.flush();			// Envoie de la demande de login et vidage du buffer
                 login = in.readLine();	// reception de la saisi client
                 
         	 	// Placement de la demande de password dans le buffer
-                out.print("Entrez votre mot de passe : ");
+                out.println("Entrez votre mot de passe : ");
                 out.flush();			// Envoie de la demande de password et vidage du buffer
                 pass = in.readLine();	// reception de la saisi client
                 
@@ -97,8 +97,7 @@ public class Authentification implements Runnable
         {
         	// Ouverture d'un fichier text contenant les données 
         	// d'autentification des membres enregistrer
-            @SuppressWarnings("resource")
-			Scanner sc = new Scanner(new File("login.txt"));
+            Scanner sc = new Scanner(new File("login.txt"));
             
             // Tant que la ligne n'est pas null
             while(sc.hasNext())
