@@ -16,7 +16,7 @@ public class Authentification implements Runnable
 
     public boolean authentifier = false;	// Vérification de l'authentification
     public Thread threadChat;	// Instance de la thread de chat
-
+ 
     /**
      * Constructeur de la procédure d'authentification
      * @param socket
