@@ -1,3 +1,5 @@
+package Reseau;
+
 import java.io.*;
 import java.net.*;
 
@@ -19,7 +21,7 @@ public class Accepter_connexion implements Runnable {
     }
 
     /**
-     * Lancement de la Threads
+     * Lancement de la Thread
      */
     public void run(){
 
