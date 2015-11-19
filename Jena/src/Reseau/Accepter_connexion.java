@@ -3,12 +3,12 @@ package Reseau;
 import java.io.*;
 import java.net.*;
 
-public class Accepter_connexion implements Runnable {
-
+public class Accepter_connexion implements Runnable 
+{
     private ServerSocket socketserver = null;   // Socket du serveur (flux entrant)
-    private Socket socket = null;   // Allocation memoire pour un socket client potentiel
+    private Socket socket = null;   // Allocation mémoire pour un socket client potentiel
     
-    // Thread déclenche la procedure d'autentification a chaque demande client
+    // Thread déclenche la procédure d'autentification à chaque demande client
     private Thread threadAcc;
     
     /**
@@ -23,19 +23,19 @@ public class Accepter_connexion implements Runnable {
     /**
      * Lancement de la Thread
      */
-    public void run(){
-
+    public void run()
+    {
         try
         {
-        	// Cette Threads reçoit en continuellement les demandes de connexion client 
+        	// Cette Thread reçoit en continu les demandes de connexion client 
         	// et lance une procédure d'autentification
             while(true)
             {
-            	// Le socket du serveur etablie la connexion avec le socket du client
+            	// Le socket du serveur établie la connexion avec le socket du client
                 socket = socketserver.accept();
                 System.out.println("Nouvelle demande de connexion client.");
                 
-                // Lançment de la threads d'autentification client
+                // Lançement de la thread d'autentification client
                 threadAcc = new Thread(new Authentification(socket));
                 threadAcc.start();
                 
