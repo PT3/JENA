@@ -30,7 +30,8 @@ public class ChatServeur implements Runnable {
     public void run(){
         
         try {
-            
+            /* Erreur a corriger */
+        	
             // Initialisation du receveur
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             
