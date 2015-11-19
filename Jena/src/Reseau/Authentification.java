@@ -97,7 +97,8 @@ public class Authentification implements Runnable
         {
         	// Ouverture d'un fichier text contenant les données 
         	// d'autentification des membres enregistrer
-            Scanner sc = new Scanner(new File("login.txt"));
+            @SuppressWarnings("resource")
+			Scanner sc = new Scanner(new File("login.txt"));
             
             // Tant que la ligne n'est pas null
             while(sc.hasNext())

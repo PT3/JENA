@@ -9,7 +9,8 @@ public class ChatServeur implements Runnable {
     private Socket socket;		// lien avec le socket Client
     private PrintWriter out;	// Envoyeur
     private BufferedReader in;	// Receveur
-    private Thread tRecep, tEmiss;	// Thread de reception et d'émission des message
+    @SuppressWarnings("unused")
+	private Thread tRecep, tEmiss;	// Thread de reception et d'émission des message
     
     
     /**
@@ -17,7 +18,7 @@ public class ChatServeur implements Runnable {
      * @param s
      * @param login
      */
-    public ChatServeur(Socket s, String login){
+    public ChatServeur(Socket socket, String login){
         this.socket = socket;
         this.login = login;
     }
