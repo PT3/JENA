@@ -13,10 +13,12 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.*;
 
-public class Login extends JFrame implements ActionListener
+public class Login extends JFrame implements ActionListener, FocusListener
 {
 	/**
 	 * Boutton d'inscription et d'invitation
@@ -47,7 +49,8 @@ public class Login extends JFrame implements ActionListener
 	 * @param x : Taille en x
 	 * @param y : Taille en y
 	 */
-	Login(int x, int y){
+	Login(int x, int y)
+	{
 		super("Conexion : ");
 		setPreferredSize(new Dimension(x,y));
 		b_inscription = new JButton("Inscription");
@@ -57,7 +60,9 @@ public class Login extends JFrame implements ActionListener
 		lLogin = new JLabel("Login(*)");
 		lPassword = new JLabel("Password(*)");
 		tfLogin = new JTextField("Obligatoire",20);
-		tfPassword = new JTextField("Obligatoire",20);
+		tfLogin.addFocusListener(this);
+		tfPassword = new JPasswordField("password",20);
+		tfPassword.addFocusListener(this);
 		rememberMe = new JCheckBox("Se souvenir de moi");
 		lPsLoose = new JLabel("Mot de passe oublié ?");
 		principale = new JPanel(new FlowLayout());
@@ -69,8 +74,8 @@ public class Login extends JFrame implements ActionListener
 	/**
 	 * Ajout des différents éléments dans la fenètre
 	 */
-	private void construireFenetre(){
-		
+	private void construireFenetre()
+	{
 		log.add(lLogin);
 		log.add(tfLogin);
 		log.add(lPassword);
@@ -81,7 +86,6 @@ public class Login extends JFrame implements ActionListener
 		bouton.add(b_invite);
 		log.add(bouton);
 		principale.add(log);
-			
 		
 		this.pack();
 		this.add(principale);
@@ -93,7 +97,7 @@ public class Login extends JFrame implements ActionListener
 	/**
 	 * Action liées aux cliques boutons
 	 */
-	 public  void    actionPerformed(ActionEvent e)
+	public void actionPerformed(ActionEvent e)
 	    {
 		 	/**
 		 	 * On recupère la source de l'event
@@ -110,10 +114,43 @@ public class Login extends JFrame implements ActionListener
 	        }
 	        else if(source==b_invite)
 	        {
-	        	System.out.println("PROUT");
 	        	Principale p = new Principale(500,500);
 	        	p.setVisible(true);
 	        	this.setVisible(false);
 	        }
 	    }
+	
+	 public void focusGained(FocusEvent e) 
+	 {
+	        Object source=e.getSource();
+	        if (source == tfLogin)
+	        {
+	        	tfLogin.setText("");
+	        }
+	        else if (source == tfPassword)
+	        {
+	        	tfPassword.setText("");
+	        }
+	        
+	 }
+	@Override
+	public void focusLost(FocusEvent e) 
+	{
+		 Object source=e.getSource();
+	        if (source == tfLogin)
+	        {
+	        	if(tfLogin.getText().equals("")|| tfLogin.getText().equals("Login"))
+	        	{
+	        		tfLogin.setText("Login");
+	        	}
+	        }
+	        else if (source == tfPassword)
+	        {
+	        	if(tfPassword.getText().equals("") || tfPassword.getText().equals("password"))
+	        	{
+	        		tfPassword.setText("password");
+	        	}   	
+	        }
+		
+	}
 }
