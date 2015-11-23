@@ -1,4 +1,4 @@
-package Reseau;
+package Serveur;
 
 import java.io.*;
 import java.net.*;
@@ -57,11 +57,15 @@ public class Authentification implements Runnable
                 // Verification des informations
                 if(isValid(login, pass))
                 {
+                    // Envoie de la confirmation de connexion
+                    out.println("true");
                     
                 	// Placement de l'annonce de connexion dans le buffer
                     System.out.println(login + " vient de se connecter ");
                     out.flush();			// Envoie et vidage du contenu du buffer
-                    authentifier = true;	// Test de connexion approuvé (pemet de sortir de la boucle)
+                    
+                    // Test de connexion approuvé (pemet de sortir de la boucle)
+                    authentifier = true;
                 }
                 else
                 {
@@ -70,7 +74,7 @@ public class Authentification implements Runnable
                 }
             }
             
-            // Lançment de la threads de chat
+            // Lançement de la thread de chat
             threadChat = new Thread(new ChatServeur(socket,login));
             threadChat.start();
             
@@ -97,7 +101,7 @@ public class Authentification implements Runnable
         {
         	// Ouverture d'un fichier text contenant les données 
         	// d'autentification des membres enregistrer
-            Scanner sc = new Scanner(new File("src/Reseau/login.txt"));
+            Scanner sc = new Scanner(new File("login.txt"));
             
             // Tant que la ligne n'est pas null
             while(sc.hasNext())

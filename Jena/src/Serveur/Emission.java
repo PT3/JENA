@@ -1,4 +1,4 @@
-package Reseau;
+package Serveur;
 
 import java.io.PrintWriter;
 import java.util.Scanner;

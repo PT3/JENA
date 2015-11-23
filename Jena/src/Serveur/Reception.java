@@ -1,4 +1,4 @@
-package Reseau;
+package Serveur;
 
 import java.io.BufferedReader;
 import java.io.IOException;
