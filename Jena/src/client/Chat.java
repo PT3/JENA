@@ -1,3 +1,5 @@
+package client;
+
 import java.util.Scanner;
 import java.net.*;
 import java.io.*;
