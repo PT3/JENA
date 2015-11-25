@@ -15,7 +15,7 @@ import java.awt.event.KeyListener;
 
 import javax.swing.*;
 
-import affichage.Message;
+import iGraphique.Message;
 
 
 public class Principale extends JFrame implements ActionListener , KeyListener
