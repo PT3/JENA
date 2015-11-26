@@ -23,6 +23,7 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 	/*private JButton send;
 	private JTextField mess;
 	private JPanel connecte, chat, message,global,chatMess;*/ 
+	
 	private JPanel mainPanel, userPanel, chatPanel, onlinePanel;
 	private JSplitPane topPanel, splitPaneHautBas;
 	private JTextArea userText;
@@ -42,7 +43,7 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 		onlinePanel.setBackground(Color.red);
 		
 		//Ajout insets
-		c1= new Insets(20,0,0,50);
+		c1= new Insets(0,0,0,0);
 		c2= new Insets(20,50,0,0);
 		testAlternance=true;
 		
@@ -115,6 +116,7 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 			{
 				//userText.setText("aaaa");
 				Message m = new Message(userText.getText());
+				
 				GridBagConstraints c = new GridBagConstraints();
 				c.gridwidth = c.REMAINDER;
 				
