@@ -1,3 +1,5 @@
+package estebanwip;
+
 public class Message
 {
 	private String type;// Can be sign in , sign up , message
@@ -14,6 +16,9 @@ public class Message
 	*/
 	public Message(String type,String sender,String content,String recipient)
 	{
-		this.type=type,this.sender=sender,this.content=content,this.recipient=recipient;
+		this.type=type;
+		this.sender=sender;
+		this.content=content;
+		this.recipient=recipient;
 	}
 }
