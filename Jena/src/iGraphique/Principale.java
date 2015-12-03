@@ -33,12 +33,15 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 	private JScrollPane scrollPane;
 	private boolean testAlternance;
 	private Insets c1,c2;
+	private SelColor color;
 
 	//Boolean de test Shift 
 	private boolean testShift;
 	
 	Principale(int x, int y)
 	{
+		this.color =new SelColor();
+		
 		//Définition du onlinePanel
 		onlinePanel = new JPanel(new FlowLayout());
 		onlinePanel.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -46,8 +49,8 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 		onlinePanel.setBackground(Color.red);
 		
 		//Ajout insets
-		c1= new Insets(0,0,0,0);
-		c2= new Insets(20,50,0,0);
+		c1= new Insets(20,30,50,0);
+		c2= new Insets(20,50,30,0);
 		testAlternance=true;
 		
 		//Définition du chatPanel
@@ -71,13 +74,13 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 		optionPanel.add(selecSmilley);
 		
 		//DÃ©finition du userPanel
-		userPanel= new JPanel(new FlowLayout());
+		userPanel= new JPanel(new BorderLayout());
 		
 		userText = new JTextArea(5,50);//Hauteur puis Largeur
 		userText.setBackground(Color.black);
-		userText.add(optionPanel,BorderLayout.NORTH);
+		userPanel.add(optionPanel,BorderLayout.NORTH);
 		scrollPane = new JScrollPane(userText);
-		userPanel.add(scrollPane,BorderLayout.SOUTH);
+		userPanel.add(scrollPane,BorderLayout.CENTER);
 		userPanel.setBackground(Color.blue);
 		
 		
@@ -96,7 +99,8 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 		
 		//DÃ©finition des Listener
 		userText.addKeyListener(this);
-	
+		selecColor.addActionListener(this);
+		
 		//ajout dans le mainPanel
 		mainPanel = new JPanel( new BorderLayout(4, 4));
 		splitPaneHautBas = new JSplitPane(JSplitPane.VERTICAL_SPLIT,topPanel, userPanel);
@@ -122,11 +126,13 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 				int w = dim.width;
 				System.out.println(h);
 				System.out.println(w);
+				
 				userText.setSize(new Dimension(w,h/5));
 				scrollPane.setSize(new Dimension(w,h/5));
 				optionPanel.setSize(new Dimension(w,40));
-				
+
 				userText.setBackground(Color.yellow);
+				validate();
 			}
 		});
 	}
@@ -134,6 +140,14 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 	public void actionPerformed(ActionEvent e)
 	{
 		userText.setText("test");
+		
+		Object source = e.getSource();
+		
+		if(source.equals(selecColor))
+		{
+			String c = userText.getText();
+			JOptionPane.showInputDialog(color);
+		}
 	}
 
 	@Override
@@ -187,9 +201,11 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 		}
 	}
 	@Override
-	public void keyTyped(KeyEvent e) {
+	public void keyTyped(KeyEvent e) 
+	{
 		// TODO Auto-generated method stub
 		
 	}
 
 }
+		
