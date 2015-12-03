@@ -21,4 +21,24 @@ public class Message
 		this.content=content;
 		this.recipient=recipient;
 	}
+	
+	public String getType()
+	{
+		return type;
+	}
+	
+	public String getSender()
+	{
+		return sender;
+	}
+	
+	public String getContent()
+	{
+		return content;
+	}
+	
+	public String getRecipient()
+	{
+		return recipient;
+	}
 }
