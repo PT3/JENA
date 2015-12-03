@@ -27,8 +27,6 @@ public class Message extends JPanel
 		if(texte.substring(texte.length()-2).equals(":)"))
 		{
 			texte += "SMILEY :)";
-			JLabel image = new JLabel( new ImageIcon( "mon_image.jpg"));
-			
 		}
 		
 		

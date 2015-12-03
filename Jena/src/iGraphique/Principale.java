@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +13,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.net.NoRouteToHostException;
 
 import javax.swing.*;
 
@@ -24,9 +26,10 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 	private JTextField mess;
 	private JPanel connecte, chat, message,global,chatMess;*/ 
 	
-	private JPanel mainPanel, userPanel, chatPanel, onlinePanel;
+	private JPanel mainPanel, userPanel, chatPanel, onlinePanel, optionPanel;
 	private JSplitPane topPanel, splitPaneHautBas;
 	private JTextArea userText;
+	private JButton selecTaillePolice,selecSmilley,selecColor;
 	private JScrollPane scrollPane;
 	private boolean testAlternance;
 	private Insets c1,c2;
@@ -53,13 +56,43 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 		chatPanel.setBackground(Color.green);
 		topPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,onlinePanel, chatPanel);
 		
+		
+		//D�finition du optionPanel
+		
+		optionPanel = new JPanel(new FlowLayout());
+		optionPanel.setPreferredSize(new Dimension(800,40));
+		
+		selecTaillePolice = new JButton("Police");
+		selecSmilley = new JButton("Smilley");
+		selecColor = new JButton("Couleur");
+		
+		optionPanel.add(selecColor);
+		optionPanel.add(selecTaillePolice);
+		optionPanel.add(selecSmilley);
+		
 		//Définition du userPanel
 		userPanel= new JPanel(new FlowLayout());
+		
 		userText = new JTextArea(5,50);//Hauteur puis Largeur
 		userText.setBackground(Color.black);
+		userText.add(optionPanel,BorderLayout.NORTH);
 		scrollPane = new JScrollPane(userText);
-		userPanel.add(scrollPane);
+		userPanel.add(scrollPane,BorderLayout.SOUTH);
 		userPanel.setBackground(Color.blue);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
+		
+		
 		
 		//Définition des Listener
 		userText.addKeyListener(this);
@@ -91,6 +124,7 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 				System.out.println(w);
 				userText.setSize(new Dimension(w,h/5));
 				scrollPane.setSize(new Dimension(w,h/5));
+				optionPanel.setSize(new Dimension(w,40));
 				
 				userText.setBackground(Color.yellow);
 			}
