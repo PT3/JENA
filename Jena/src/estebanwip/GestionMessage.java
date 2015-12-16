@@ -5,7 +5,7 @@ import java.net.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Authentification implements Runnable
+public class GestionMessage implements Runnable
 {
     private ArrayList<Socket> socket;		// Instance du Socket client 
     private PrintWriter out = null;     // Envoyeur
@@ -13,86 +13,68 @@ public class Authentification implements Runnable
     public Thread threadChat;	// Instance de la thread de chat
  
     /**
-     * Constructeur de la procédure d'authentification
+     * Constructeur de la procédure d'GestionMessage
      * @param socket
      */
     
-    private Authentification()
+    private GestionMessage()
     {
     	socket = new ArrayList<Socket>();
     }
-    public Authentification(Socket socket)
+    public GestionMessage(Socket socket)
     {
     	this.socket.add(socket);
     }
 
-    private static Authentification INSTANCE = new Authentification();
-    
-    public static Authentification getInstance()
-    {
-    	return INSTANCE;
-    } 
-    
+//    private static GestionMessage INSTANCE = new GestionMessage();
+//    
+//    public static GestionMessage getInstance()
+//    {
+//    	return INSTANCE;
+//    } 
+//    
     /**
-     * Lancement d'une procédure d'authentification
+     * 
      */
     public void run()
     {
-    	public boolean authentifier = false;
+    	String login = "";
         try
         {
-        	 
-            // Initialisation du receveur 
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            
-            // Initialisation de l'envoyeur
-            out = new PrintWriter(socket.getOutputStream());
-
             boolean authentifier = false;
-		    String login = "";
+            in = new BufferedReader(new InputStreamReader(socket.get(1).getInputStream()));
+            out = new PrintWriter(socket.get(1).getOutputStream());
 		    String pass = null;
-
             while(!authentifier)
             {
 
-             	// Placement de la demande de login dans le buffer
                 out.println("Entrez votre login : ");
-                out.flush();			// Envoie de la demande de login et vidage du buffer
-                login = in.readLine();	// reception de la saisi client
-                
-        	 	// Placement de la demande de password dans le buffer
+                out.flush();		
+                login = in.readLine();	
                 out.println("Entrez votre mot de passe : ");
-                out.flush();			// Envoie de la demande de password et vidage du buffer
-                pass = in.readLine();	// reception de la saisi client
-                
-                // Vçrification des informations
+                out.flush();			
+                pass = in.readLine();
                 if(isValid(login, pass))
                 {
-                    // Envoie de la confirmation de connexion
-                    out.println("true");
-                    
-                	// Placement de l'annonce de connexion dans le buffer
+                    out.println("true");   
                     System.out.println(login + " vient de se connecter ");
-                    out.flush();			// Envoie et vidage du contenu du buffer
-                    
-                    // Test de connexion approuvç (pemet de sortir de la boucle)
+                    out.flush();
                     authentifier = true;
                 }
                 else
                 {
-                    out.println("erreur");	// Placement du message erreur dans le buffer
-                    out.flush();		// Envoie et vidage du contenu du buffer
+                    out.println("erreur");
+                    out.flush();
                 }
             }
             
-            // Lançement de la thread de chat
-            threadChat = new Thread(new ChatServeur(socket,login));
+            threadChat = new Thread(new ChatServeur(socket.get(0),login));
             threadChat.start();
             
         }
         catch (IOException e)
         {
-        	// En cas de deconexion du client
+        
         	System.err.println(login + " ne répond pas !");
         }
     }
@@ -110,24 +92,23 @@ public class Authentification implements Runnable
         
         try
         {
-        	// Ouverture d'un fichier text contenant les donnçes 
-        	// d'autentification des membres enregistrer
+        
             Scanner sc = new Scanner(new File("src/Serveur/login.txt"));
             
-            // Tant que la ligne n'est pas null
+           
             while(sc.hasNext())
             {
-            	// Si la ligne contient le login et le pass saisi
+            
                 if(sc.nextLine().equals(login + " % " + pass))
                 {
-                    connexion = true; 	//  La connexion est confirmée 
-                    break;		// On sort donc de la boucle de lecture
+                    connexion = true; 	
+                    break;
                 }
             }
             
         }catch (FileNotFoundException e)
         {
-        	// Si le fichier n'existe pas on affiche un message d'erreur
+  
         	System.err.println("Le fichier n'existe pas !");
         }
         

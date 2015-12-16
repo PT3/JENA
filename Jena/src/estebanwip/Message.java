@@ -27,11 +27,6 @@ public class Message
 		this(tab[0],tab[1],tab[2],tab[3]);
 	}
 
-	public Message(String in)
-	{
-	 	this(in.split("¤"));
-	}
-	
 	public String getType()
 	{
 		return type;
@@ -46,14 +41,25 @@ public class Message
 	{
 		return content;
 	}
-	
 	public String getRecipient()
 	{
 		return recipient;
 	}
-	
+
+	public Message FromString(String in)
+	{
+	 	String[] tmp = in.split("¤");
+	 	return new Message(tmp);
+	}
+
 	public String toString()
 	{
 		return (type+"¤"+sender+"¤"+content+"¤"+recipient);
+	}
+
+	public static void main(String[] args) 
+	{
+		Message a=new Message("aa","bb","cc","dd");
+		System.out.println(a.toString());
 	}
 }

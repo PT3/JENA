@@ -27,16 +27,11 @@ public class Accepter_connexion implements Runnable
     {
         try
         {
-        	// Cette Thread reçoit en continu les demandes de connexion client 
-        	// et lance une procédure d'autentification
             while(true)
             {
-            	// Le socket du serveur établie la connexion avec le socket du client
                 socket = socketserver.accept();
                 System.out.println("Nouvelle demande de connexion client.");
-                
-                // Lançement de la thread d'autentification client
-                threadAcc = new Thread(new Authentification(socket));
+                threadAcc = new Thread(new GestionMessage(socket));
                 threadAcc.start();
             }
         }
