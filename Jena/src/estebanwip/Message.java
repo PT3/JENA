@@ -22,6 +22,16 @@ public class Message
 		this.recipient=recipient;
 	}
 	
+	public Message(String[] tab)
+	{
+		this(tab[0],tab[1],tab[2],tab[3]);
+	}
+
+	public Message(String in)
+	{
+	 	this(in.split("¤"));
+	}
+	
 	public String getType()
 	{
 		return type;
@@ -40,5 +50,10 @@ public class Message
 	public String getRecipient()
 	{
 		return recipient;
+	}
+	
+	public String toString()
+	{
+		return (type+"¤"+sender+"¤"+content+"¤"+recipient);
 	}
 }
