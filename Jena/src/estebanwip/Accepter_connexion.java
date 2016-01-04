@@ -7,8 +7,7 @@ public class Accepter_connexion implements Runnable
 {
     private ServerSocket socketserver = null;   // Socket du serveur (flux entrant)
     private Socket socket = null;   // Allocation mémoire pour un socket client potentiel
-    
-    // Thread déclenche la procédure d'autentification à chaque demande client
+    private GestionMessage GMessage = null;
     private Thread threadAcc;
     
     /**
@@ -18,6 +17,7 @@ public class Accepter_connexion implements Runnable
     public Accepter_connexion(ServerSocket socketserver)
     {
     	this.socketserver = socketserver;
+    	
     }
 
     /**
@@ -31,7 +31,7 @@ public class Accepter_connexion implements Runnable
             {
                 socket = socketserver.accept();
                 System.out.println("Nouvelle demande de connexion client.");
-                threadAcc = new Thread(new GestionMessage(socket));
+                threadAcc = new Thread(GMessage=GestionMessage.getInstance(socket));
                 threadAcc.start();
             }
         }

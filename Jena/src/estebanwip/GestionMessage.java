@@ -11,6 +11,7 @@ public class GestionMessage implements Runnable
     private PrintWriter out = null;     // Envoyeur
     private BufferedReader in = null;   // Receveur
     public Thread threadChat;	// Instance de la thread de chat
+    private static Socket currentSocket;  
  
     /**
      * Constructeur de la procédure d'GestionMessage
@@ -21,29 +22,27 @@ public class GestionMessage implements Runnable
     {
     	socket = new ArrayList<Socket>();
     }
-    public GestionMessage(Socket socket)
+    public void addSocket(Socket socket)
     {
     	this.socket.add(socket);
     }
 
-//    private static GestionMessage INSTANCE = new GestionMessage();
-//    
-//    public static GestionMessage getInstance()
-//    {
-//    	return INSTANCE;
-//    } 
-//    
-    /**
-     * 
-     */
+    private static GestionMessage INSTANCE = new GestionMessage();
+    
+    public static GestionMessage getInstance(Socket soc)
+    {
+    	currentSocket=soc;
+    	return INSTANCE;
+    } 
+    
     public void run()
     {
     	String login = "";
         try
         {
             boolean authentifier = false;
-            in = new BufferedReader(new InputStreamReader(socket.get(1).getInputStream()));
-            out = new PrintWriter(socket.get(1).getOutputStream());
+            in = new BufferedReader(new InputStreamReader(currentSocket.getInputStream()));
+            out = new PrintWriter(currentSocket.getOutputStream());
 		    String pass = null;
             while(!authentifier)
             {
@@ -68,7 +67,7 @@ public class GestionMessage implements Runnable
                 }
             }
             
-            threadChat = new Thread(new ChatServeur(socket.get(0),login));
+            threadChat = new Thread(new ChatServeur(currentSocket,login));
             threadChat.start();
             
         }
@@ -83,7 +82,7 @@ public class GestionMessage implements Runnable
      * Verification des information de connexion client 
      * @param login
      * @param pass
-     * @return connexion
+     * @return connexion			
      */
     private boolean isValid(String login, String pass)
     {

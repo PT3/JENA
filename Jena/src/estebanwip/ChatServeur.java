@@ -10,7 +10,7 @@ public class ChatServeur implements Runnable {
     private PrintWriter out;	// Envoyeur
     private BufferedReader in;	// Receveur
     @SuppressWarnings("unused")
-	private Thread tRecep, tEmiss;	// Thread de reception et d'Ã©mission des message
+	private Thread tRecep, tEmiss;	// Thread de reception et d'émission des message
     
     
     /**
@@ -50,7 +50,7 @@ public class ChatServeur implements Runnable {
         catch (IOException e)
         {
         	// Si la connexion client est perdu on affiche un message d'erreur
-        	System.err.println(login + " a Ã©tÃ© dÃ©connectÃ© ");
+        	System.err.println(login + " a été déconnecté ");
         }
         
     }

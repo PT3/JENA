@@ -15,7 +15,7 @@ public class Serveur
             // Application du Socket sur le port 2000 Ã  l'adresse localhost
             socketserver = new ServerSocket(2000);
             System.out.println("Le serveur est Ã  l'écoute du port " + socketserver.getLocalPort());
-
+            
             // Lancement de la Thread de détection des demandes client
             t = new Thread(new Accepter_connexion(socketserver));
             t.start();
