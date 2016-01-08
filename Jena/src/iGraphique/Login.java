@@ -5,6 +5,9 @@
  */
 
 package iGraphique;
+
+import inscription.BdConnection;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -20,14 +23,18 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+
 import javax.swing.*;
 
 public class Login extends JFrame implements ActionListener, FocusListener
 {
+	public static String logConnection;
+	public static String passConnection;
+	
 	/**
 	 * Boutton d'inscription et d'invitation
 	 */
-	private JButton b_inscription,b_invite,b_connexion;
+	private JButton b_inscription,b_connexion;
 	/**
 	 * Champ de texte : Login / Password
 	 */
@@ -59,8 +66,6 @@ public class Login extends JFrame implements ActionListener, FocusListener
 		setPreferredSize(new Dimension(x,y));
 		b_inscription = new JButton("Inscription");
 		b_inscription.addActionListener(this);
-		b_invite = new JButton("Invité");
-		b_invite.addActionListener(this);
 		b_connexion = new JButton("Connexion");
 		b_connexion.addActionListener(this);
 		lLogin = new JLabel("Login(*)");
@@ -89,7 +94,6 @@ public class Login extends JFrame implements ActionListener, FocusListener
 		log.add(lPsLoose);
 		log.add(rememberMe);
 		bouton.add(b_inscription);
-		bouton.add(b_invite);
 		bouton.add(b_connexion);
 		log.add(bouton);
 		principale.add(log);
@@ -106,112 +110,61 @@ public class Login extends JFrame implements ActionListener, FocusListener
 	 */
 	public void actionPerformed(ActionEvent e)
 	    {
-		 	/**
-		 	 * On recupère la source de l'event
-		 	 */
-	        Object source = e.getSource();
-	        /**
-	         * Si la source est le bouton d'inscription, on va sur la fenetre de chat principale
-	         */
-	        if (source == b_inscription)
-	        {
-	        	Inscription i = new Inscription(200,300);
-	        	i.setVisible(true);
-	        	this.setVisible(false);
-	        }
-	        else if(source==b_invite)
-	        {
-	        	Principale p = new Principale(500,500);
-	        	//p.setVisible(true);
-	        	this.setVisible(false);
-	        }
+			/**
+			 * On recupère la source de l'event
+			 */
+        	Object source = e.getSource();
+        	/**
+        	 * Si la source est le bouton d'inscription, on va sur la fenetre de chat principale
+        	 */
+        	if (source == b_inscription)
+        	{
+        		Inscription i = new Inscription(500,500);
+        		i.setVisible(true);
+        		this.setVisible(false);
+        	}
+        	
+        	else if (source==b_connexion)
+        	{
+        		String TextLogin = tfLogin.getText();
+        		String TextPassword = tfPassword.getText();
+    		
+        		logConnection = TextLogin;
+        		passConnection = TextPassword;
+    		
+        		BdConnection con1 = new BdConnection();
+        		
+        		boolean valid = con1.LogValid(logConnection, passConnection);
+        		
+        		if (valid)
+        		{
+        			Principale p = new Principale(500,500);
+        			p.setVisible(true);
+        			this.setVisible(false);
+        		}
+    		
+        		else
+        		{
+        			this.dispose();
+            		LoginPass lp = new LoginPass(250,320);
+        		}
 	        
-	        String TextLogin = tfLogin.getText();
-	        String TextPassword = tfPassword.getText();
-	        
-	        String url = "jdbc:mysql://localhost:3306/";
-	        
-	        /**
-	         * The MySQL user.
-	         */
-	        String user = "root";
-	        
-	        /**
-	         * Password for the above MySQL user. If no password has been 
-	         * set (as is the default for the root user in XAMPP's MySQL),
-	         * an empty string can be used.
-	         */
-	        String bddpassword = "";
-	        
-	        try
-	        {
-	            Class.forName("com.mysql.jdbc.Driver").newInstance();
-	            Connection con = DriverManager.getConnection(url, user, bddpassword);
-	            
-	            Statement stt = con.createStatement();
-	            
-	            /**
-	             * select a database for use. 
-	             */
-	            stt.execute("USE jena");
-	            
-	            /**
-	             * Query people entries with the lname 'Bloggs'
-	             */
-	            ResultSet res = stt.executeQuery("SELECT * FROM user WHERE login = 'popotheone'");
-	            
-	            /**
-	             * Iterate over the result set from the above query
-	             */
-	            while (res.next())
-	            {
-	                System.out.println(res.getString("login") + " " + res.getString("mail"));
-	            }
-	            System.out.println("");
-	            
-	            /**
-	             * Same as the last query, but using a prepared statement. 
-	             * Prepared statements should be used when building query strings
-	             * from user input as they protect against SQL injections
-	             */
-	            PreparedStatement prep = con.prepareStatement("SELECT * FROM user WHERE login = ?");
-	            prep.setString(1, "popotheone");
-	            
-	            res = prep.executeQuery();
-	            while (res.next())
-	            {
-	                System.out.println(res.getString("login") + " " + res.getString("mail"));
-	            }
-	            
-	            /**
-	             * Free all opened resources
-	             */
-	            res.close();
-	            stt.close();
-	            prep.close();
-	            con.close();
-	            
-	        }
-	        
-	        catch (Exception ex)
-	        {
-	            ex.printStackTrace();
-	        }
+        	}
 	    }
 	
-	 public void focusGained(FocusEvent e) 
-	 {
-	        Object source=e.getSource();
-	        if (source == tfLogin)
-	        {
-	        	tfLogin.setText("");
-	        }
-	        else if (source == tfPassword)
-	        {
-	        	tfPassword.setText("");
-	        }
-	        
-	 }
+	public void focusGained(FocusEvent e) 
+	{
+		Object source=e.getSource();
+		if (source == tfLogin)
+		{
+			tfLogin.setText("");
+			}
+		else if (source == tfPassword)
+		{
+			tfPassword.setText("");
+		}
+	}
+	 
 	@Override
 	public void focusLost(FocusEvent e) 
 	{

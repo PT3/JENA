@@ -1,7 +1,8 @@
-package inscription;
+package iGraphique;
+
+import inscription.BdConnection;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -11,20 +12,23 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 import javax.swing.*;
 
 public class LoginPass extends JFrame implements ActionListener, FocusListener
 {
-	
-
 	public static String logConnection;
 	public static String passConnection;
 	
 	/**
 	 * Boutton d'inscription et d'invitation
 	 */
-	private JButton b_inscription,b_invite;
+	private JButton b_inscription,b_connexion;
 	/**
 	 * Champ de texte : Login / Password
 	 */
@@ -52,15 +56,14 @@ public class LoginPass extends JFrame implements ActionListener, FocusListener
 	 */
 	LoginPass(int x, int y)
 	{
-		super("Conexion : ");
+		super("Connexion : ");
 		setPreferredSize(new Dimension(x,y));
 		b_inscription = new JButton("Inscription");
 		b_inscription.addActionListener(this);
-		b_invite = new JButton("Invité");
-		b_invite.addActionListener(this);
+		b_connexion = new JButton("Connexion");
+		b_connexion.addActionListener(this);
 		lLogin = new JLabel("Login(*)");
-		lPassword = new JLabel("Password(*). Mot de passe incorrect");
-		lPassword.setForeground(Color.red);
+		lPassword = new JLabel("Password(*) Mot de passe incorrect");
 		tfLogin = new JTextField("Obligatoire",20);
 		tfLogin.addFocusListener(this);
 		tfPassword = new JPasswordField("password",20);
@@ -85,7 +88,7 @@ public class LoginPass extends JFrame implements ActionListener, FocusListener
 		log.add(lPsLoose);
 		log.add(rememberMe);
 		bouton.add(b_inscription);
-		bouton.add(b_invite);
+		bouton.add(b_connexion);
 		log.add(bouton);
 		principale.add(log);
 		
@@ -101,46 +104,46 @@ public class LoginPass extends JFrame implements ActionListener, FocusListener
 	 */
 	public void actionPerformed(ActionEvent e)
 	    {
-		 	/**
-		 	 * On recupère la source de l'event
-		 	 */
-	        Object source = e.getSource();
-	        /**
-	         * Si la source est le bouton d'inscription, on va sur la fenetre de chat principale
-	         */
-	        if (source == b_inscription)
-	        {
-	        	Inscription i = new Inscription(500,500);
-	        	i.setVisible(true);
-	        	this.setVisible(false);
-	        }
-	        else if(source==b_invite)
-	        {
-	        	String TextLogin = tfLogin.getText();
-	    		String TextPassword = tfPassword.getText();
-	    		
-	    		passConnection = TextPassword;
-	    		logConnection = TextLogin;
-	    		
-	    		BdConnection con1 = new BdConnection(logConnection, passConnection);
-	    		
-	    		boolean isEqualLog = (logConnection.equals(BdConnection.BdLog));
-	    		boolean isEqualPass = (passConnection.equals(BdConnection.BdPass));
-	    		
-	    		if(!isEqualPass || !isEqualLog)
-	    		{
-	    			this.dispose();
-	    			LoginPass lp = new LoginPass(250,320);
-	    		}
-	    		
-	    		else
-	    		{
-	    			Principale p = new Principale(500,500);
-		        	p.setVisible(true);
-		        	this.setVisible(false);
-	    		}
-	        }
+		/**
+	 	 * On recupère la source de l'event
+	 	 */
+        Object source = e.getSource();
+        /**
+         * Si la source est le bouton d'inscription, on va sur la fenetre de chat principale
+         */
+        if (source == b_inscription)
+        {
+        	Inscription i = new Inscription(500,500);
+        	i.setVisible(true);
+        	this.setVisible(false);
+        }
+        else if(source==b_connexion)
+        {
+        	String TextLogin = tfLogin.getText();
+    		String TextPassword = tfPassword.getText();
+		
+    		logConnection = TextLogin;
+    		passConnection = TextPassword;
+		
+    		BdConnection con1 = new BdConnection();
+    		
+    		boolean valid = con1.LogValid(logConnection, passConnection);
+    		
+    		if (valid)
+    		{
+    			Principale p = new Principale(500,500);
+    			p.setVisible(true);
+    			this.setVisible(false);
+    		}
+		
+    		else
+    		{
+    			this.dispose();
+        		LoginPass lp = new LoginPass(250,320);
+    		}
+	        
 	    }
+	 }
 	
 	 public void focusGained(FocusEvent e) 
 	 {

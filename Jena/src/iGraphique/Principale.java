@@ -42,7 +42,7 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 	//Boolean de test Shift 
 	private boolean testShift;
 	
-	Principale(int x, int y)
+	public Principale(int x, int y)
 	{
 		this.color =new SelColor();
 		

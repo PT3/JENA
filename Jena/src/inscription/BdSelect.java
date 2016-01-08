@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import iGraphique.Inscription;
+
 /**
  * Affiche les infos de la bases de données pour la personne qui s'inscrit
  */

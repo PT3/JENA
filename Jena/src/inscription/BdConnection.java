@@ -5,18 +5,21 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import iGraphique.Login;
+
 public class BdConnection {
 	
 	public static String BdLog=null;
 	public static String BdPass=null;
-	public String log;
-	public String pass;
 	
-	public BdConnection(String a, String b) {
-		
-		this.log = Login.logConnection;
-		this.pass = Login.passConnection;
-		
+	public BdConnection() 
+	{
+				
+	}
+	
+	public boolean LogValid(String log, String pass)
+	{
+
 		String url = "jdbc:mysql://localhost:3306/";
 
 		/**
@@ -63,5 +66,9 @@ public class BdConnection {
 		catch (Exception ex) {
 			ex.printStackTrace();
 		}
+		
+		boolean isEqualPass = (pass.equals(BdPass));
+		
+		return isEqualPass;
 	}
 }

@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import iGraphique.Inscription;
+
 public class BdInscription
 {
 	
