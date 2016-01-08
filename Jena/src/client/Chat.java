@@ -39,9 +39,6 @@ public class Chat implements Runnable
             // Initialisation du receveur
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             
-            // Initilisation du scanner
-            sc = new Scanner(System.in);
-            
             // Lançement de la thread de d'envoi
             Thread threadEnvoi = new Thread(new Envoie(out));
             threadEnvoi.start();
