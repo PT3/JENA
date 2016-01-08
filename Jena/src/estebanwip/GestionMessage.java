@@ -7,33 +7,21 @@ import java.util.Scanner;
 
 public class GestionMessage implements Runnable
 {
-    private ArrayList<Socket> socket;		// Instance du Socket client 
+    private Socket socket;		// Instance du Socket client 
     private PrintWriter out = null;     // Envoyeur
     private BufferedReader in = null;   // Receveur
     public Thread threadChat;	// Instance de la thread de chat
-    private static Socket currentSocket;  
  
     /**
      * Constructeur de la procédure d'GestionMessage
      * @param socket
      */
     
-    private GestionMessage()
-    {
-    	socket = new ArrayList<Socket>();
-    }
-    public void addSocket(Socket socket)
-    {
-    	this.socket.add(socket);
-    }
 
-    private static GestionMessage INSTANCE = new GestionMessage();
-    
-    public static GestionMessage getInstance(Socket soc)
+    public GestionMessage(Socket socket)
     {
-    	currentSocket=soc;
-    	return INSTANCE;
-    } 
+    	this.socket=socket;
+    }
     
     public void run()
     {
@@ -41,8 +29,8 @@ public class GestionMessage implements Runnable
         try
         {
             boolean authentifier = false;
-            in = new BufferedReader(new InputStreamReader(currentSocket.getInputStream()));
-            out = new PrintWriter(currentSocket.getOutputStream());
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            out = new PrintWriter(socket.getOutputStream());
 		    String pass = null;
             while(!authentifier)
             {
@@ -66,8 +54,8 @@ public class GestionMessage implements Runnable
                     out.flush();
                 }
             }
-            
-            threadChat = new Thread(new ChatServeur(currentSocket,login));
+            ChatServeur chat=null;
+            threadChat = new Thread(chat=ChatServeur.getInstance(socket,login));
             threadChat.start();
             
         }

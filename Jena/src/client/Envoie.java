@@ -31,9 +31,8 @@ public class Envoie implements Runnable
         sc = new Scanner(System.in);    // Initilisation du scanner
         
         while(true){
-            System.out.print("Votre message :");
             message = sc.nextLine();    // Saisi du message
-            out.println(message);       // On met le message dans le buffer
+            out.println(message);
             out.flush();       // Envoie et vidage du contenu du buffer
         }
     }

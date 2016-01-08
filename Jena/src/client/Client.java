@@ -15,7 +15,7 @@ public class Client
         try
         {
             ip = "92.138.249.243";   // Ip du serveur
-            ip = "192.168.1.18";    // Redefinition temporaire pour les tests
+            ip = "192.168.1.15";    // Redefinition temporaire pour les tests
             ip = "localhost";       // Redefinition temporaire pour les tests
             
 

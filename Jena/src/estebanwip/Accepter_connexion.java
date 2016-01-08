@@ -31,7 +31,7 @@ public class Accepter_connexion implements Runnable
             {
                 socket = socketserver.accept();
                 System.out.println("Nouvelle demande de connexion client.");
-                threadAcc = new Thread(GMessage=GestionMessage.getInstance(socket));
+                threadAcc = new Thread(new GestionMessage(socket));
                 threadAcc.start();
             }
         }

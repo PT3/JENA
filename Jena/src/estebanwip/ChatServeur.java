@@ -2,15 +2,16 @@ package estebanwip;
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
 
 public class ChatServeur implements Runnable {
 
-    private String login;		// Login du client
-    private Socket socket;		// lien avec le socket Client
+    private ArrayList<Client> user;
+	private static String login;		// Login du client
+    private static Socket socket;		// lien avec le socket Client
     private PrintWriter out;	// Envoyeur
     private BufferedReader in;	// Receveur
-    @SuppressWarnings("unused")
-	private Thread tRecep, tEmiss;	// Thread de reception et d'Èmission des message
+    private String message = null;
     
     
     /**
@@ -18,11 +19,19 @@ public class ChatServeur implements Runnable {
      * @param s
      * @param login
      */
-    public ChatServeur(Socket socket, String login){
-        this.socket = socket;
-        this.login = login;
+    public ChatServeur(){
+    	user=new ArrayList<Client>();
+    	user.add(new Client("SERVER",null,null,null));
     }
 
+    private static ChatServeur INSTANCE = new ChatServeur();
+    
+    public static ChatServeur getInstance(Socket soc,String log)
+    {
+    	socket=soc;
+    	login=log;
+    	return INSTANCE;
+    } 
     
     /**
      * Lancement d'une proc√©dure de chat
@@ -30,7 +39,6 @@ public class ChatServeur implements Runnable {
     public void run(){
         
         try {
-            /* Erreur a corriger */
         	
             // Initialisation du receveur
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -38,13 +46,13 @@ public class ChatServeur implements Runnable {
             // Initialisation de l'envoyeur
             out = new PrintWriter(socket.getOutputStream());
             
-            // Thread de reception des messages 
-            Thread tRecep = new Thread(new Reception(in, out, login));
-            tRecep.start();
+            user.add(new Client(login,socket,out,in));
+            System.out.println("a");
             
-            // Thread d'envoie des messages depuis le serveur
-            Thread tEmiss = new Thread(new Emission(out));
-            tEmiss.start();
+            Thread tRecep = new Thread(new Reception(user));
+            tRecep.start();
+
+                    
             
         }
         catch (IOException e)
