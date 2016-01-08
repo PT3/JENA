@@ -1,11 +1,7 @@
-/**
- * Login.java
- * @date 06/11/2015
- * @author Julien
- */
-
 package inscription;
+
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -18,7 +14,7 @@ import java.awt.event.FocusListener;
 
 import javax.swing.*;
 
-public class Login extends JFrame implements ActionListener, FocusListener
+public class LoginPass extends JFrame implements ActionListener, FocusListener
 {
 	
 
@@ -54,7 +50,7 @@ public class Login extends JFrame implements ActionListener, FocusListener
 	 * @param x : Taille en x
 	 * @param y : Taille en y
 	 */
-	Login(int x, int y)
+	LoginPass(int x, int y)
 	{
 		super("Conexion : ");
 		setPreferredSize(new Dimension(x,y));
@@ -63,7 +59,8 @@ public class Login extends JFrame implements ActionListener, FocusListener
 		b_invite = new JButton("Invité");
 		b_invite.addActionListener(this);
 		lLogin = new JLabel("Login(*)");
-		lPassword = new JLabel("Password(*)");
+		lPassword = new JLabel("Password(*). Mot de passe incorrect");
+		lPassword.setForeground(Color.red);
 		tfLogin = new JTextField("Obligatoire",20);
 		tfLogin.addFocusListener(this);
 		tfPassword = new JPasswordField("password",20);

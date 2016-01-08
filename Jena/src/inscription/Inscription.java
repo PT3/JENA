@@ -1,4 +1,4 @@
-package iGraphique;
+package inscription;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -26,6 +26,11 @@ import javax.swing.*;
  */
 public class Inscription extends JFrame implements ActionListener
 {
+	public static String m;
+	public static String log;
+	public static String pass;
+	public static String pass2;
+	
 	//Instanciation des différents éléments graphiques
 	private JPanel mainPanel,inscriptionPanel;
 	private JTextField tfLogin,tfEmail;
@@ -80,18 +85,20 @@ public class Inscription extends JFrame implements ActionListener
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setBackground(Color.DARK_GRAY);
 	}
-
+	
 	/* Actions effectuées lorsque l'utilisateur appuie sur le bouton valider*/
 	public void actionPerformed(ActionEvent e)
 	{
-		// TODO Auto-generated method stub
+
 		String TextLogin = tfLogin.getText();
 		String TextEmail = tfEmail.getText();
 		String TextPassword = tfPassword.getText();
 		String TextConfirmPassword = tfConfirmPassword.getText();
-		System.out.println("Login : " + TextLogin);
-		System.out.println("Email : " + TextEmail);
-		//POPO Requêtes
+		
+		m = TextEmail;
+		log = TextLogin;
+		pass = TextPassword;
+		pass2 = TextConfirmPassword;
 		
 		boolean isEqual = (TextPassword.equals(TextConfirmPassword));
 		
@@ -107,103 +114,26 @@ public class Inscription extends JFrame implements ActionListener
 			
 			else
 			{
-				String log = TextLogin;
-				String m = TextEmail;
-				String pass = TextPassword;
+				if(EmailValidator.validateEmailAddress(m) == false)
+	    		{
+	    			BdInscription insm = new BdInscription(m, log, pass, pass2);
+	    		}
 				
-				String url = "jdbc:mysql://localhost:3306/";
-		        
-		        /**
-		         * The MySQL user.
-		         */
-		        String user = "root";
-		        
-		        /**
-		         * Password for the above MySQL user. If no password has been 
-		         * set (as is the default for the root user in XAMPP's MySQL),
-		         * an empty string can be used.
-		         */
-		        String bddpassword = "";
-		        
-		        try
-		        {
-		            Class.forName("com.mysql.jdbc.Driver").newInstance();
-		            Connection con = DriverManager.getConnection(url, user, bddpassword);
-		            
-		            Statement stt = con.createStatement();
-		            
-		            /**
-		             * select a database for use. 
-		             */
-		            stt.execute("USE jena");
-		            
-
-		            /**
-		             * Add entries to the example table
-		             */
-		            stt.executeUpdate("INSERT INTO user (rang, login, mail, password) VALUES" + 
-		                    "(0,'" +log + "','" +m + "','" +pass+ "')");
-		            
-		            /**
-		             * Query people entries with the lname 'Bloggs'
-		             */
-		            ResultSet res = stt.executeQuery("SELECT * FROM user WHERE login = 'popotheone'");
-		            
-		            /**
-		             * Iterate over the result set from the above query
-		             */
-		            while (res.next())
-		            {
-		                System.out.println(res.getString("login") + " " + res.getString("mail"));
-		            }
-		            System.out.println("");
-		            
-		            /**
-		             * Same as the last query, but using a prepared statement. 
-		             * Prepared statements should be used when building query strings
-		             * from user input as they protect against SQL injections
-		             */
-		            PreparedStatement prep = con.prepareStatement("SELECT * FROM user WHERE login = ?");
-		            prep.setString(1, "popotheone");
-		            
-		            res = prep.executeQuery();
-		            while (res.next())
-		            {
-		                System.out.println(res.getString("login") + " " + res.getString("mail"));
-		            }
-		            
-		            /**
-		             * Free all opened resources
-		             */
-		            res.close();
-		            stt.close();
-		            prep.close();
-		            con.close();
-		            
-		        }
-		        
-		        catch (Exception ex)
-		        {
-		            ex.printStackTrace();
-		        }
-		        
-		        System.out.println("Password : " + TextPassword);
-				System.out.println("ConfirmPassword : " + TextConfirmPassword);
+				else
+				{
+					BdInscription ins = new BdInscription(m, log, pass, pass2);
+					Login l = new Login(250,320);
+					this.dispose();
+				}
+				
 			}
 		}
-		
 		/* si les mdp sont différents, affiche une erreur*/
 		else
 		{
 			System.out.println("Vos mots de passe doivent correspondre");
 		}
-		
-		/* si les mdp sont égaux, les enregistre en base de données */
-		if(isEqual)
-		{
-			
-		}
-			
 	}
+
 	
 }
