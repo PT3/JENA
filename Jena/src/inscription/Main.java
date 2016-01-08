@@ -1,4 +1,4 @@
-package iGraphique;
+package inscription;
 
 import java.awt.Dimension;
 

@@ -4,7 +4,7 @@
  * @author Julien
  */
 
-package iGraphique;
+package inscription;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
