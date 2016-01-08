@@ -51,6 +51,7 @@ public class ChatServeur implements Runnable {
 					delUser.getSocket().close();
 					System.out.println(delUser.getLogin()+" déconnecté");
 					user.remove(i);
+					userThread.remove(i);
 				} 
     			catch (IOException e) 
     			{
