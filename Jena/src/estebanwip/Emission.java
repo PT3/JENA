@@ -28,13 +28,10 @@ public class Emission implements Runnable
     	
         
         while(message!=null){
-        	for(int i=1;i<user.size();i++)
+        	for(int i=0;i<user.size();i++)
         	{
-        		if(user.get(i).getWriter()!= null)
-        		{
         			user.get(i).getWriter().println(message);
         			user.get(i).getWriter().flush();
-        		}
         	}
         	message=null;
         		

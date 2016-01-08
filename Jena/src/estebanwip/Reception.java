@@ -9,14 +9,16 @@ public class Reception implements Runnable {
 
     private String message = null;	// Message du client
     private ArrayList<Client> user;
+    private int i;
     /**
      * Constructeur du receveur
      * @param in
      * @param out
      * @param login
      */
-    public Reception(ArrayList<Client> user){
+    public Reception(ArrayList<Client> user,int i){
     	this.user=user;
+    	this.i=i;
     }
 
     
@@ -29,18 +31,26 @@ public class Reception implements Runnable {
         {
         	try
         	{
-        		for(int i=1;i<user.size();i++)
+        		while(true)
         		{
 	                message = user.get(i).getBuffer().readLine();	// Receptionne la saisi du client
-	                // Si le message contient quelque chose
-	                if(message != null)
+	                String test=message;
+	                System.out.println(test);
+	                if (message.equals("quit"))
 	                {
-	                	// On colle le login du client a sont message
-	                    message = user.get(i).getLogin() + " : " + message;
-	                    Thread tEmiss = new Thread(new Emission(user,message));
-	                    tEmiss.start();
-	                    
+            			user.get(i).getWriter().println("quit");
+            			user.get(i).getWriter().flush();
+	                	ChatServeur.getInstance().deleteUser(user.get(i));
 	                }
+	                    message = user.get(i).getLogin() + " : " + message;
+	                    	for(int j=0;j<user.size();j++)
+	                    	{
+	                    			user.get(j).getWriter().println(message);
+	                    			user.get(j).getWriter().flush();
+	                    	}
+	                    	//message=null;
+		             //   
+	        		//}
         		}
             }
         	catch (IOException e)

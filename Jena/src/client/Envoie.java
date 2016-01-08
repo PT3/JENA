@@ -8,7 +8,7 @@ public class Envoie implements Runnable
 {
 
     private String message = null;  // Allocation memoire pour les messages recus
-    private String login = null;    // Login du client
+    private String test = null;    // Login du client
     private Scanner sc = null;      // Scanner de saisi du message
     private PrintWriter out;        // Envoyeur
     
@@ -32,8 +32,12 @@ public class Envoie implements Runnable
         
         while(true){
             message = sc.nextLine();    // Saisi du message
+            test=message;
+            System.out.println(test);
             out.println(message);
+
             out.flush();       // Envoie et vidage du contenu du buffer
+
         }
     }
 

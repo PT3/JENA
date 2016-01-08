@@ -7,11 +7,12 @@ import java.util.ArrayList;
 public class ChatServeur implements Runnable {
 
     private ArrayList<Client> user;
+    private ArrayList<Thread> userThread;
 	private static String login;		// Login du client
     private static Socket socket;		// lien avec le socket Client
     private PrintWriter out;	// Envoyeur
     private BufferedReader in;	// Receveur
-    private String message = null;
+
     
     
     /**
@@ -21,7 +22,8 @@ public class ChatServeur implements Runnable {
      */
     public ChatServeur(){
     	user=new ArrayList<Client>();
-    	user.add(new Client("SERVER",null,null,null));
+    	userThread=new ArrayList<Thread>();
+
     }
 
     private static ChatServeur INSTANCE = new ChatServeur();
@@ -32,6 +34,32 @@ public class ChatServeur implements Runnable {
     	login=log;
     	return INSTANCE;
     } 
+    public static ChatServeur getInstance()
+    {
+    	return INSTANCE;
+    } 
+    
+    public void deleteUser(Client delUser)
+    {
+    	int i=0;
+    	for(Client test:user)
+    	{
+    		if(delUser.getLogin()==test.getLogin())
+    		{
+    			try 
+    			{
+					delUser.getSocket().close();
+					System.out.println(delUser.getLogin()+" déconnecté");
+					user.remove(i);
+				} 
+    			catch (IOException e) 
+    			{
+					e.printStackTrace();
+				}
+    		}
+    	}
+    }
+    
     
     /**
      * Lancement d'une procÃ©dure de chat
@@ -47,19 +75,15 @@ public class ChatServeur implements Runnable {
             out = new PrintWriter(socket.getOutputStream());
             
             user.add(new Client(login,socket,out,in));
-            System.out.println("a");
-            
-            Thread tRecep = new Thread(new Reception(user));
-            tRecep.start();
-
-                    
-            
+            userThread.add(new Thread(new Reception(user,user.size()-1)));
+            userThread.get(userThread.size()-1).start();
         }
         catch (IOException e)
         {
         	// Si la connexion client est perdu on affiche un message d'erreur
         	System.err.println(login + " a été déconnecté ");
         }
+
         
     }
 }

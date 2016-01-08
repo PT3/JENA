@@ -1,6 +1,9 @@
 package client;
 
 import java.util.Scanner;
+
+import estebanwip.ChatServeur;
+
 import java.net.*;
 import java.io.*;
 
@@ -24,8 +27,18 @@ public class Chat implements Runnable
     {
         this.socket = socket;
     }
+    public Chat(){}
+    private static Chat INSTANCE = new Chat();
     
+    public static Chat getInstance()
+    {
+    	return INSTANCE;
+    }
 
+    public void quit()
+    {
+		System.exit(0);
+    }
     /**
      * Lancement du chat
      */

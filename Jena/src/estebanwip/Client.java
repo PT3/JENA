@@ -9,15 +9,15 @@ public class Client {
 	private String login;
 	private Socket soc;
 	private PrintWriter out;
-    private BufferedReader in;	
+    private BufferedReader in;
+    private Emission chat;
 	
 	public Client(String login, Socket soc, PrintWriter out, BufferedReader in)
 	{
 		this.login=login;
 		this.soc=soc;
 		this.out=out;
-		this.in=in;
-		
+		this.in=in;	
 	}
 	
 	public String getLogin()
@@ -37,5 +37,10 @@ public class Client {
 	public PrintWriter getWriter()
 	{
 		return out;
+	}
+	
+	public Emission getEmi()
+	{
+		return chat;
 	}
 }

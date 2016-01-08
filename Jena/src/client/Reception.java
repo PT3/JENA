@@ -31,6 +31,10 @@ public class Reception implements Runnable
             try
             {
                 message = in.readLine();        // Reception du message
+                if(message.equals("quit"))
+                {
+                	Chat.getInstance().quit();
+                }
                 System.out.println(message);    // Affichage du message
             }
             catch (IOException e)
