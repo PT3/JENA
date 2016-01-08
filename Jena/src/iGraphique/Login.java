@@ -6,7 +6,7 @@
 
 package iGraphique;
 
-import inscription.BdConnection;
+import inscription.BdVerif;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -132,7 +132,7 @@ public class Login extends JFrame implements ActionListener, FocusListener
         		logConnection = TextLogin;
         		passConnection = TextPassword;
     		
-        		BdConnection con1 = new BdConnection();
+        		BdVerif con1 = new BdVerif();
         		
         		boolean valid = con1.LogValid(logConnection, passConnection);
         		

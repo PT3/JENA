@@ -16,7 +16,12 @@ public class BdInscription
 	public String pass;
 	public String pass2;
 	
-	public BdInscription(String a, String b, String c, String d) {
+	public BdInscription()
+	{
+		
+	}
+	
+	public void BdInscriptionConf(String a, String b, String c, String d) {
 		
 		this.m = Inscription.m;
 		this.log = Inscription.log;

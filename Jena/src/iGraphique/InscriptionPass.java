@@ -27,7 +27,7 @@ import javax.swing.*;
  * L'utilisateur doit remplir : Pseudo, Password, Confirm Password, Email
  * Les données sont vérfiés , puis envoyer à la base de données 
  */
-public class Inscription extends JFrame implements ActionListener
+public class InscriptionPass extends JFrame implements ActionListener
 {
 	
 	public static String m;
@@ -43,7 +43,7 @@ public class Inscription extends JFrame implements ActionListener
 	private JButton bValider;
 	
 	/* Constructeur de la fenêtre, prends en paramètre la longueur ( int X) et la longueur (int Y)de la fenêtre */
-	public Inscription(int x,int y)
+	public InscriptionPass(int x,int y)
 	{
 		super("Inscription");
 		
@@ -51,7 +51,7 @@ public class Inscription extends JFrame implements ActionListener
 		inscriptionPanel = new JPanel( new GridLayout(9,1));
 		lLogin = new JLabel("Login(*)");
 		lPassword = new JLabel("Password(*)");
-		lConfirmPassword = new JLabel("Confirm Password(*)");
+		lConfirmPassword = new JLabel("Confirm Password(*). Vos mots de passe doivent correspondre");
 		lEmail = new JLabel("Email :");
 		tfLogin = new JTextField("",20);
 		tfPassword = new JPasswordField(20);
@@ -103,22 +103,39 @@ public class Inscription extends JFrame implements ActionListener
 		pass = TextPassword;
 		pass2 = TextConfirmPassword;
 		
-		BdVerif verif1 = new BdVerif();
+		BdVerif pass1 = new BdVerif();
+		BdVerif log1 = new BdVerif();
+		BdVerif mail1 = new BdVerif();
 		BdInscription insc = new BdInscription();
 		
-		boolean validPass = verif1.EqualPassword(m, log, pass, pass2);
+		boolean validPass = pass1.EqualPassword(m, log, pass, pass2);
+		boolean EqualLog = log1.EqualLogin(log);
+		boolean EqualMail = mail1.EqualMail(m);
 		
-		if(validPass)
+		if(EqualLog)
 		{
-			insc.BdInscriptionConf(m, log, pass, pass2);
-			Login l = new Login(250,320);
+			InscriptionPass ip = new InscriptionPass(500,500);
+			this.dispose();
+		}
+		
+		else if(EqualMail)
+		{
+			InscriptionPass ip = new InscriptionPass(500,500);
+			this.dispose();
+		}
+		
+		else if(!validPass)
+		{
+			InscriptionPass ip = new InscriptionPass(500,500);
 			this.dispose();
 		}
 		
 		else
 		{
-			InscriptionPass ip = new InscriptionPass(500,500);
+			insc.BdInscriptionConf(m, log, pass, pass2);
+			Login l = new Login(250,320);
 			this.dispose();
 		}
+
 	}
 }
