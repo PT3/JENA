@@ -68,6 +68,14 @@ public class SelColor extends JPanel implements ChangeListener
         frame.setVisible(true);
     }
  
+    public Color getColor()
+    {
+        return colcho.getColor();
+    }
+    
+    
+    
+    
     public static void main(String[] args) 
     {
         //Schedule a job for the event-dispatching thread:

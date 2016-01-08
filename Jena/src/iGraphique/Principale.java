@@ -14,6 +14,9 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.net.NoRouteToHostException;
+import java.nio.charset.spi.CharsetProvider;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.*;
 
@@ -29,11 +32,12 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 	private JPanel mainPanel, userPanel, chatPanel, onlinePanel, optionPanel;
 	private JSplitPane topPanel, splitPaneHautBas;
 	private JTextArea userText;
-	private JButton selecTaillePolice,selecSmilley,selecColor;
+	private JButton selecSmilley,selecColor;
 	private JScrollPane scrollPane;
 	private boolean testAlternance;
 	private Insets c1,c2;
 	private SelColor color;
+	private ArrayList<Integer> listRetourligne;
 
 	//Boolean de test Shift 
 	private boolean testShift;
@@ -41,6 +45,8 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 	Principale(int x, int y)
 	{
 		this.color =new SelColor();
+		
+		listRetourligne = new ArrayList<Integer>();
 		
 		//Définition du onlinePanel
 		onlinePanel = new JPanel(new FlowLayout());
@@ -65,37 +71,21 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 		optionPanel = new JPanel(new FlowLayout());
 		optionPanel.setPreferredSize(new Dimension(800,40));
 		
-		selecTaillePolice = new JButton("Police");
 		selecSmilley = new JButton("Smilley");
 		selecColor = new JButton("Couleur");
 		
 		optionPanel.add(selecColor);
-		optionPanel.add(selecTaillePolice);
 		optionPanel.add(selecSmilley);
 		
 		//DÃ©finition du userPanel
-		userPanel= new JPanel(new BorderLayout());
 		
+		userPanel= new JPanel(new BorderLayout());
 		userText = new JTextArea(5,50);//Hauteur puis Largeur
 		userText.setBackground(Color.black);
 		userPanel.add(optionPanel,BorderLayout.NORTH);
 		scrollPane = new JScrollPane(userText);
 		userPanel.add(scrollPane,BorderLayout.CENTER);
 		userPanel.setBackground(Color.blue);
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-
-		
-		
 		
 		//DÃ©finition des Listener
 		userText.addKeyListener(this);
@@ -117,7 +107,7 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 		
 		addComponentListener(new ComponentAdapter() 
 		{
-			@Override
+
 			public void componentResized(ComponentEvent e) 
 			{
 				//System.out.println("Fenetre modifier");
@@ -150,7 +140,6 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 		}
 	}
 
-	@Override
 	public void keyPressed(KeyEvent e) 
 	{
 		if(e.getKeyCode()==KeyEvent.VK_SHIFT)
@@ -162,8 +151,9 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 		{
 			if (!testShift)
 			{
-				//userText.setText("aaaa");
-				Message m = new Message(userText.getText());
+				listRetourligne.add(userText.getText().length());
+				Message m = new Message(userText.getText(),color.getColor(), listRetourligne,500,Color.blue);
+				listRetourligne.clear();
 				
 				GridBagConstraints c = new GridBagConstraints();
 				c.gridwidth = c.REMAINDER;
@@ -178,6 +168,9 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 					c.insets=c2;
 					testAlternance = true;
 				}
+				//Permet de désactiver l'effet originelle de l'action d'un JTextArea
+				e.consume();
+				
 				chatPanel.add(m,c);
 				chatPanel.validate();
 				chatPanel.updateUI();
@@ -186,12 +179,12 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 			}
 			else
 			{
+				listRetourligne.add(userText.getText().length());
 				userText.setText(userText.getText()+"\n");
 			}
 		}
 	}
 
-	@Override
 	public void keyReleased(KeyEvent e) 
 	{
 	
@@ -200,10 +193,8 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 			testShift = false;
 		}
 	}
-	@Override
 	public void keyTyped(KeyEvent e) 
 	{
-		// TODO Auto-generated method stub
 		
 	}
 

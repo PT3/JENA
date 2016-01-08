@@ -1,16 +1,32 @@
 package iGraphique;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
 public class Message extends JPanel
 {
-	String texte;
+	private String texte;
+	private int x,y;
+	private Color color;
+	private ArrayList<String> listMessages;
+	private int largeur;
+	private Color colorBack;
 	
-	public Message(String a)
+	public Message(String a, Color c, ArrayList<Integer> list,int la,Color colora)
 	{
-		texte=a;
+		colorBack = colora;
+		texte = a;
+		color = c;
+		listMessages = new ArrayList<String>();
+		largeur = la;
+
+		x = (int)largeur;
+		y = 50;
+		
 		//COUCOU 
 		//ROUGE 
 		//TAILLE 20
@@ -23,14 +39,22 @@ public class Message extends JPanel
 		//2 premisere case du tableau 
 		//tab[0] et tab[1]
 		
-		
+		//Effectue la séparation entre tout les retours à la ligne dans un message 
+		for (int i = 0, j = 0; i < list.size(); i++) 
+		{
+			System.out.println(texte.substring(j,list.get(i)));
+			listMessages.add(texte.substring(j,list.get(i)));
+			j = list.get(i);
+		}
+				
+		/*
 		if(texte.substring(texte.length()-2).equals(":)"))
 		{
 			texte += "SMILEY :)";
 		}
 		
 		
-		String[] tab = texte.split("/ ");//SYMBOLE de SEPARATION !!!!!!!!
+		/*String[] tab = texte.split("/ ");//SYMBOLE de SEPARATION !!!!!!!!
 		JLabel l;
 		
 		//message va contenir le message 
@@ -42,7 +66,7 @@ public class Message extends JPanel
 		}*/
 		
 		
-		if(tab.length > 1)
+		/*if(tab.length > 1)
 		{
 			l = new JLabel(tab[1]);
 			
@@ -92,9 +116,26 @@ public class Message extends JPanel
 		else
 		{
 			l = new JLabel(texte);
-		}
+		}*/
 		
 		
-		add(l);
+		//add(l);
+		setPreferredSize(new Dimension(x,y));
 	}
+	
+	public void paintComponent(Graphics g)
+	{
+
+		g.setColor(colorBack);
+		g.fillRect(0, 0, x, y);
+		System.out.println(color);
+		g.setColor(color);
+		for (int i = 0; i < listMessages.size(); i++) 
+		{
+			g.drawString(listMessages.get(i), 5, 15+20*i);
+			System.out.println(listMessages.get(i));
+			System.out.println(5*i);
+		}
+	}
+	
 }

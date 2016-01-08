@@ -20,7 +20,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-
 import javax.swing.*;
 
 public class Login extends JFrame implements ActionListener, FocusListener
@@ -123,7 +122,7 @@ public class Login extends JFrame implements ActionListener, FocusListener
 	        else if(source==b_invite)
 	        {
 	        	Principale p = new Principale(500,500);
-	        	p.setVisible(true);
+	        	//p.setVisible(true);
 	        	this.setVisible(false);
 	        }
 	        
