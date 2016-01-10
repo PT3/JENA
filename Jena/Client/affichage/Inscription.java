@@ -19,10 +19,7 @@ import java.sql.Statement;
 
 import javax.swing.*;
 
-import iGraphique.InscriptionPass;
-import iGraphique.Login;
-import inscri.BdInscription;
-import inscri.BdVerif;
+import inscri.*;
 
 
 /* Page d'inscription, 
@@ -105,21 +102,18 @@ public class Inscription extends JFrame implements ActionListener
 		pass = TextPassword;
 		pass2 = TextConfirmPassword;
 		
-		BdVerif verif1 = new BdVerif();
-		BdInscription insc = new BdInscription();
+		BDD verif1 = new BDD();
 		
-		boolean validPass = verif1.EqualPassword(m, log, pass, pass2);
-		
-		if(validPass)
+		if(verif1.EqualPassword(m, log, pass, pass2))
 		{
-			insc.BdInscriptionConf(m, log, pass, pass2);
+			verif1.BdInscriptionConf(m, log, pass, pass2);
 			Login l = new Login(250,320);
 			this.dispose();
 		}
 		
 		else
 		{
-			InscriptionPass ip = new InscriptionPass(500,500);
+			new Inscription(500,500);
 			this.dispose();
 		}
 	}

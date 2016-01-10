@@ -56,10 +56,4 @@ public class Message
 	{
 		return (type+"¤"+sender+"¤"+content+"¤"+recipient);
 	}
-
-	public static void main(String[] args) 
-	{
-		Message a=new Message("aa","bb","cc","dd");
-		System.out.println(a.toString());
-	}
 }

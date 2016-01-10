@@ -18,8 +18,7 @@ import java.nio.charset.spi.CharsetProvider;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
-import iGraphique.Message;
-import iGraphique.SelColor;
+
 
 
 public class Principale extends JFrame implements ActionListener , KeyListener
@@ -109,7 +108,6 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 
 			public void componentResized(ComponentEvent e) 
 			{
-				//System.out.println("Fenetre modifier");
 				Dimension dim = getSize();
 				int h = dim.height;
 				int w = dim.width;
@@ -128,7 +126,6 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 	
 	public void actionPerformed(ActionEvent e)
 	{
-		userText.setText("test");
 		
 		Object source = e.getSource();
 		
@@ -167,6 +164,7 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 					m = new Message(userText.getText(),color.getColor(), listRetourligne,500,Color.red);
 					c.insets=c2;
 					testAlternance = true;
+					
 				}
 				//m = new Message(userText.getText(),color.getColor(), listRetourligne,500,Color.blue);
 				listRetourligne.clear();

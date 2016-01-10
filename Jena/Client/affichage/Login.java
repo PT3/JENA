@@ -24,7 +24,7 @@ import java.sql.Statement;
 
 import javax.swing.*;
 
-import inscri.BdVerif;
+import inscri.*;
 
 public class Login extends JFrame implements ActionListener, FocusListener
 {
@@ -132,11 +132,10 @@ public class Login extends JFrame implements ActionListener, FocusListener
         		logConnection = TextLogin;
         		passConnection = TextPassword;
     		
-        		BdVerif con1 = new BdVerif();
+        		BDD con1 = new BDD();
         		
-        		boolean valid = con1.LogValid(logConnection, passConnection);
         		
-        		if (valid)
+        		if (con1.LogValid(logConnection, passConnection))
         		{
         			Principale p = new Principale(500,500);
         			p.setVisible(true);
@@ -146,7 +145,7 @@ public class Login extends JFrame implements ActionListener, FocusListener
         		else
         		{
         			this.dispose();
-            		LoginPass lp = new LoginPass(250,320);
+            		new Login(250,320);
         		}
 	        
         	}

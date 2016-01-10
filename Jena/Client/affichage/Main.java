@@ -2,7 +2,6 @@ package affichage;
 
 import java.awt.Dimension;
 
-import iGraphique.Login;
 
 public class Main {
 

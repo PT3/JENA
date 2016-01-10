@@ -92,4 +92,9 @@ public class Message extends JPanel
 		}
 	}
 	
+	public String getText()
+	{
+		return texte;
+	}
+	
 }
