@@ -17,9 +17,7 @@ import java.net.NoRouteToHostException;
 import java.nio.charset.spi.CharsetProvider;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.*;
-
 import iGraphique.Message;
 
 
@@ -152,22 +150,26 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 			if (!testShift)
 			{
 				listRetourligne.add(userText.getText().length());
-				Message m = new Message(userText.getText(),color.getColor(), listRetourligne,500,Color.blue);
-				listRetourligne.clear();
+				Message m  = null;
 				
 				GridBagConstraints c = new GridBagConstraints();
 				c.gridwidth = c.REMAINDER;
 				
 				if (testAlternance)
 				{
+					m = new Message(userText.getText(),color.getColor(), listRetourligne,500,Color.blue);
 					c.insets=c1;
 					testAlternance = false;
 				}
 				else
 				{
+					m = new Message(userText.getText(),color.getColor(), listRetourligne,500,Color.red);
 					c.insets=c2;
 					testAlternance = true;
 				}
+				//m = new Message(userText.getText(),color.getColor(), listRetourligne,500,Color.blue);
+				listRetourligne.clear();
+				
 				//Permet de désactiver l'effet originelle de l'action d'un JTextArea
 				e.consume();
 				
