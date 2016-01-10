@@ -1,16 +1,11 @@
 package client;
 
 import java.util.Scanner;
-
-import serveur.ChatServeur;
-
 import java.net.*;
 import java.io.*;
 
-
 public class Chat implements Runnable
 {
-
     public BufferedReader in = null;    // Receveur
     public PrintWriter out = null;      // Envoyeur
     public Thread threadEnvoi;      // Procedure de gestion des envois
@@ -27,7 +22,9 @@ public class Chat implements Runnable
     {
         this.socket = socket;
     }
+    
     public Chat(){}
+    
     private static Chat INSTANCE = new Chat();
     
     public static Chat getInstance()
@@ -39,6 +36,7 @@ public class Chat implements Runnable
     {
 		System.exit(0);
     }
+    
     /**
      * Lancement du chat
      */
@@ -58,8 +56,7 @@ public class Chat implements Runnable
             
             // Lançement de la thread de reception
             Thread threadRece = new Thread(new Reception(in));
-            threadRece.start();
-            
+            threadRece.start();  
         }
         catch (IOException e)
         {
