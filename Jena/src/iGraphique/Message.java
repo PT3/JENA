@@ -3,7 +3,10 @@ package iGraphique;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.io.File;
 import java.util.ArrayList;
+
 import javax.swing.*;
 
 public class Message extends JPanel
@@ -13,6 +16,7 @@ public class Message extends JPanel
 	private Color color;
 	private ArrayList<String> listMessages;
 	private ArrayList<String> listSmiley;
+	private ArrayList<String> listImages;
 	private int largeur;
 	private Color colorBack;
 	
@@ -23,8 +27,11 @@ public class Message extends JPanel
 		color = c;
 		listMessages = new ArrayList<String>();
 		listSmiley = new ArrayList<String>();
+		listImages = new ArrayList<String>();
+		
 		
 		remplissageListeSmiley();
+		remplissageListeImages();
 		
 		largeur = la;
 
@@ -129,6 +136,25 @@ public class Message extends JPanel
 		setPreferredSize(new Dimension(x,y));
 	}
 	
+	private void remplissageListeImages() 
+	{
+		listImages.add(".\\ImageSmileys\\barbouille.jpg");
+		listImages.add(".\\ImageSmileys\\complice.jpg");
+		listImages.add(".\\ImageSmileys\\content.jpg");
+		listImages.add(".\\ImageSmileys\\happy.jpg");
+		listImages.add(".\\ImageSmileys\\class.jpg");
+		listImages.add(".\\ImageSmileys\\deter.jpg");
+		listImages.add(".\\ImageSmileys\\etonn.jpg");
+		listImages.add(".\\ImageSmileys\\indiff.jpg");
+		listImages.add(".\\ImageSmileys\\langue.jpg");
+		listImages.add(".\\ImageSmileys\\peur.jpg");
+		listImages.add(".\\ImageSmileys\\pleure.jpg");
+		listImages.add(".\\ImageSmileys\\stup.jpg");
+		listImages.add(".\\ImageSmileys\\triste.jpg");
+		
+		
+	}
+
 	private void remplissageListeSmiley()
 	{
 		listSmiley.add(":S");
@@ -154,31 +180,55 @@ public class Message extends JPanel
 		g.fillRect(0, 0, x, y);
 		System.out.println(color);
 		g.setColor(color);
+		
+		int taille= 0;
 		for (int i = 0; i < listMessages.size(); i++) 
 		{
 			String m = listMessages.get(i);
 			
 			String[] tab = m.split(" ");
-			
+			String avant = "";
+			taille = 0;
+			boolean testImage = false;
 			for (int j = 0; j < tab.length; j++) 
 			{
+				boolean test  = false;
+				int index = 0;
 				for (int j2 = 0; j2 < listSmiley.size(); j2++)
 				{
-					
 					if(tab[j].equals(listSmiley.get(j2)))
 					{
-						System.out.println("TTTTTTEEEEEEEEEEEEEEEEESSSSSSSSSTTTTTTTTTTTTTTTTT");
-						System.out.println(tab[j]);
-						System.out.println(listSmiley.get(j2));
+						test = true;
+						index = j2;
 					}
-						
+				}
+				if (test)
+				{
+					System.out.println("testttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
+					Image im = getToolkit().getImage(listImages.get(index));
+					g.drawString(avant, 5+taille, 15+20*i);
+					g.drawImage(im, (int)(taille+avant.length()*5+5),20*i,20,20, null);
+					testImage = true;
+					
+					taille = avant.length()*5+25;
+					avant= "";
+				}
+				else
+				{
+					avant += tab[j]+" ";
 				}
 			}
 			
-			g.drawString(listMessages.get(i), 5, 15+20*i);
+			System.out.println(testImage);
+			if (!testImage)
+				g.drawString(listMessages.get(i), 5, 15+20*i);
 			System.out.println(listMessages.get(i));
 			System.out.println(5*i);
 		}
 	}
 	
+	public int getW()
+	{
+		return y;
+	}
 }
