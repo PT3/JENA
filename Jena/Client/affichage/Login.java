@@ -8,6 +8,7 @@ package affichage;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,7 +38,7 @@ public class Login extends JFrame implements ActionListener, FocusListener
 	/**
 	 *  Label : Login/Password/Mot de passe perdu
 	 */
-	private JLabel lLogin,lPassword,lPsLoose;
+	private JLabel lLogin,lPassword,lPsLoose,lErreur;
 	/**
 	 * CheckBox : Se souvenir de moi;
 	 */
@@ -73,6 +74,30 @@ public class Login extends JFrame implements ActionListener, FocusListener
 		log.setLayout(gL);
 		construireFenetre();
 	}
+	
+	public Login(int x,int y,String erreur)
+	{
+		super("Connexion : ");
+		setPreferredSize(new Dimension(x,y));
+		b_inscription = new JButton("Inscription");
+		b_inscription.addActionListener(this);
+		b_connexion = new JButton("Connexion");
+		b_connexion.addActionListener(this);
+		lErreur = new JLabel("Mauvais mot de passe/login");
+		lLogin = new JLabel("Login(*)");
+		lPassword = new JLabel("Password(*)");
+		tfLogin = new JTextField("Obligatoire",20);
+		tfLogin.addFocusListener(this);
+		tfPassword = new JPasswordField("password",20);
+		tfPassword.addFocusListener(this);
+		rememberMe = new JCheckBox("Se souvenir de moi");
+		lPsLoose = new JLabel("Mot de passe oublié ?");
+		principale = new JPanel(new FlowLayout());
+		bouton = new JPanel();
+		log = new JPanel();
+		log.setLayout(new GridLayout(8,1));
+		construireFenetreErreur();	
+	}
 	/**
 	 * Ajout des différents éléments dans la fenètre
 	 */
@@ -96,6 +121,13 @@ public class Login extends JFrame implements ActionListener, FocusListener
 		this.setResizable(false);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
+	
+	private void construireFenetreErreur()
+	{
+		log.add(lErreur);
+		construireFenetre();
+	}
+	
 	/**
 	 * Action liées aux cliques boutons
 	 */
@@ -110,7 +142,7 @@ public class Login extends JFrame implements ActionListener, FocusListener
         	 */
         	if (source == b_inscription)
         	{
-        		Inscription i = new Inscription(500,500);
+        		Inscription i = new Inscription(300,400);
         		i.setVisible(true);
         		this.setVisible(false);
         	}
@@ -136,7 +168,7 @@ public class Login extends JFrame implements ActionListener, FocusListener
         		else
         		{
         			this.dispose();
-            		new Login(250,320);
+            		new Login(300,350,"erreur");
         		}
 	        
         	}

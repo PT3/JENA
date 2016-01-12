@@ -14,8 +14,8 @@ public class Client
         try
         {
             ip = "92.138.249.243";   // Ip du serveur
-            ip = "192.168.1.15";    // Redefinition temporaire pour les tests
-            ip = "localhost";       // Redefinition temporaire pour les tests
+            ip = "193.50.135.199";    // Redefinition temporaire pour les tests
+          ip = "localhost";       // Redefinition temporaire pour les tests
 
             socket = new Socket(ip, 2000);  // Création du lien avec le serveur
             System.out.println("Connexion serveur est etablie");
