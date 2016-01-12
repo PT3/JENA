@@ -57,12 +57,12 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 		onlinePanel.setBackground(Color.red);
 		
 		//Ajout insets
-		c1= new Insets(20,30,50,0);
-		c2= new Insets(20,50,30,0);
+		c2= new Insets(5,100,10,0);
+		c1= new Insets(5,0,10,100);
 		testAlternance=true;
 		
 		//Définition du chatPanel
-		chatPanel= new JPanel();
+		chatPanel= new JPanel(new GridBagLayout());
 		chatPanel.setPreferredSize(new Dimension(350, 200));
 		chatPanel.setBackground(Color.green);
 		topPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,onlinePanel, chatPanel);

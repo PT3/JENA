@@ -139,6 +139,20 @@ public class Message extends JPanel
 	private void remplissageListeImages() 
 	{
 		listImages.add(".\\ImageSmileys\\barbouille.jpg");
+		listImages.add(".\\ImageSmileys\\complice.jpg");
+		listImages.add(".\\ImageSmileys\\content.jpg");
+		listImages.add(".\\ImageSmileys\\happy.jpg");
+		listImages.add(".\\ImageSmileys\\class.jpg");
+		listImages.add(".\\ImageSmileys\\deter.jpg");
+		listImages.add(".\\ImageSmileys\\etonn.jpg");
+		listImages.add(".\\ImageSmileys\\indiff.jpg");
+		listImages.add(".\\ImageSmileys\\langue.jpg");
+		listImages.add(".\\ImageSmileys\\peur.jpg");
+		listImages.add(".\\ImageSmileys\\pleure.jpg");
+		listImages.add(".\\ImageSmileys\\stup.jpg");
+		listImages.add(".\\ImageSmileys\\triste.jpg");
+		
+		
 	}
 
 	private void remplissageListeSmiley()
@@ -179,17 +193,19 @@ public class Message extends JPanel
 			for (int j = 0; j < tab.length; j++) 
 			{
 				boolean test  = false;
+				int index = 0;
 				for (int j2 = 0; j2 < listSmiley.size(); j2++)
 				{
 					if(tab[j].equals(listSmiley.get(j2)))
 					{
 						test = true;
+						index = j2;
 					}
 				}
 				if (test)
 				{
 					System.out.println("testttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
-					Image im = getToolkit().getImage(listImages.get(0));
+					Image im = getToolkit().getImage(listImages.get(index));
 					g.drawString(avant, 5+taille, 15+20*i);
 					g.drawImage(im, (int)(taille+avant.length()*5+5),20*i,20,20, null);
 					testImage = true;
