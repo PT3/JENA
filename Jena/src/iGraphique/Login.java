@@ -6,8 +6,6 @@
 
 package iGraphique;
 
-import inscription.BdVerif;
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -18,19 +16,23 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.*;
+import java.io.*;
 
 import javax.swing.*;
+
+import client.Client;
 
 public class Login extends JFrame implements ActionListener, FocusListener
 {
 	public static String logConnection;
 	public static String passConnection;
-	
+	private Client client;
+	private Socket socket;
 	/**
 	 * Boutton d'inscription et d'invitation
 	 */
@@ -60,9 +62,11 @@ public class Login extends JFrame implements ActionListener, FocusListener
 	 * @param x : Taille en x
 	 * @param y : Taille en y
 	 */
-	Login(int x, int y)
-	{
+	public Login(int x, int y,Client client, Socket socket)
+	{	
 		super("Connexion : ");
+		this.client=client;
+		this.socket=socket;
 		setPreferredSize(new Dimension(x,y));
 		b_inscription = new JButton("Inscription");
 		b_inscription.addActionListener(this);
@@ -126,28 +130,63 @@ public class Login extends JFrame implements ActionListener, FocusListener
         	
         	else if (source==b_connexion)
         	{
-        		String TextLogin = tfLogin.getText();
         		String TextPassword = tfPassword.getText();
     		
-        		logConnection = TextLogin;
+        	    BufferedReader in = null;   // Receveur
+        	    PrintWriter out = null;     // Envoyeur
+        	    
+                // Initialisation de l'envoyeur
+                try {
+					out = new PrintWriter(socket.getOutputStream());
+				} 
+                catch (IOException e2) 
+                {e2.printStackTrace();}
+                
+                // Initialisation du receveur
+                try {
+					in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				} 
+                catch (IOException e2)
+                {e2.printStackTrace();}
+
+                    out.println(tfLogin.getText());     // Saisi du login et placer dans le buffer
+                    out.flush();        				// Envoie de la saisi du login et vidage du buffer
+                    
+                    out.println(tfPassword.getText());  // Saisi du password et placer dans le buffer
+                    out.flush();        				// Envoie de la saisi du password et vidage du buffer
+                    
+                    boolean verif = false;
+                    
+					try {
+						verif = in.readLine().equals("true");
+					}
+					catch (IOException e1)
+					{e1.printStackTrace();}
+					
+                    // Si le serveur envoie la confirmation
+                    if(verif)
+                    {
+                        System.out.println("Je suis connecte ");
+                        Principale p = new Principale(500,500);
+            			p.setVisible(true);
+            			this.setVisible(false);
+                    }
+                    // Si les informations sont incorrectes
+                    else
+                    {
+            			this.dispose();
+            			Principale p = new Principale(500,500);
+                		//Login lp = new Login(250,320, client, socket);
+                        System.err.println("Vos informations sont incorrectes ");
+                    }
+        		
+        		logConnection = tfLogin.getText();
         		passConnection = TextPassword;
     		
-        		BdVerif con1 = new BdVerif();
+        	//	BdVerif con1 = new BdVerif();
         		
-        		boolean valid = con1.LogValid(logConnection, passConnection);
+        		//boolean valid = con1.LogValid(logConnection, passConnection);
         		
-        		if (valid)
-        		{
-        			Principale p = new Principale(500,500);
-        			p.setVisible(true);
-        			this.setVisible(false);
-        		}
-    		
-        		else
-        		{
-        			this.dispose();
-            		LoginPass lp = new LoginPass(250,320);
-        		}
 	        
         	}
 	    }
@@ -165,7 +204,7 @@ public class Login extends JFrame implements ActionListener, FocusListener
 		}
 	}
 	 
-	@Override
+	
 	public void focusLost(FocusEvent e) 
 	{
 		 Object source=e.getSource();

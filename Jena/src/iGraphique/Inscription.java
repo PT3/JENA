@@ -1,8 +1,5 @@
 package iGraphique;
 
-import inscription.BdInscription;
-import inscription.BdVerif;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -102,7 +99,7 @@ public class Inscription extends JFrame implements ActionListener
 		log = TextLogin;
 		pass = TextPassword;
 		pass2 = TextConfirmPassword;
-		
+		/*
 		BdVerif verif1 = new BdVerif();
 		BdInscription insc = new BdInscription();
 		
@@ -119,6 +116,6 @@ public class Inscription extends JFrame implements ActionListener
 		{
 			InscriptionPass ip = new InscriptionPass(500,500);
 			this.dispose();
-		}
+		}*/
 	}
 }

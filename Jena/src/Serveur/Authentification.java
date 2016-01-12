@@ -54,11 +54,12 @@ public class Authentification implements Runnable
                 // Vçrification des informations
                 if(isValid(login, pass))
                 {
-                    // Envoie de la confirmation de connexion
-                    out.println("true");
+
                     
                 	// Placement de l'annonce de connexion dans le buffer
                     System.out.println(login + " vient de se connecter ");
+                    // Envoie de la confirmation de connexion
+                    out.println("true");
                     out.flush();			// Envoie et vidage du contenu du buffer
                     
                     // Test de connexion approuvç (pemet de sortir de la boucle)
