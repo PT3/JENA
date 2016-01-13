@@ -65,7 +65,8 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 		chatPanel= new JPanel(new GridBagLayout());
 		chatPanel.setPreferredSize(new Dimension(350, 200));
 		chatPanel.setBackground(Color.green);
-		topPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,onlinePanel, chatPanel);
+		scrollPane = new JScrollPane(chatPanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		topPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,onlinePanel, scrollPane);
 		
 		
 		//Définition du optionPanel
