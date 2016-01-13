@@ -59,19 +59,19 @@ public class Message extends JPanel
 	}
 	private void remplissageListeImages() 
 	{
-		listImages.add(".\\ImageSmileys\\barbouille.jpg");
-		listImages.add(".\\ImageSmileys\\complice.jpg");
-		listImages.add(".\\ImageSmileys\\content.jpg");
-		listImages.add(".\\ImageSmileys\\happy.jpg");
-		listImages.add(".\\ImageSmileys\\class.jpg");
-		listImages.add(".\\ImageSmileys\\deter.jpg");
-		listImages.add(".\\ImageSmileys\\etonn.jpg");
-		listImages.add(".\\ImageSmileys\\indiff.jpg");
-		listImages.add(".\\ImageSmileys\\langue.jpg");
-		listImages.add(".\\ImageSmileys\\peur.jpg");
-		listImages.add(".\\ImageSmileys\\pleure.jpg");
-		listImages.add(".\\ImageSmileys\\stup.jpg");
-		listImages.add(".\\ImageSmileys\\triste.jpg");
+		listImages.add(".\\ImageSmileys\\barbouille.png");
+		listImages.add(".\\ImageSmileys\\complice.png");
+		listImages.add(".\\ImageSmileys\\content.png");
+		listImages.add(".\\ImageSmileys\\happy.png");
+		listImages.add(".\\ImageSmileys\\class.png");
+		listImages.add(".\\ImageSmileys\\deter.png");
+		listImages.add(".\\ImageSmileys\\etonn.png");
+		listImages.add(".\\ImageSmileys\\indiff.png");
+		listImages.add(".\\ImageSmileys\\langue.png");
+		listImages.add(".\\ImageSmileys\\peur.png");
+		listImages.add(".\\ImageSmileys\\pleure.png");
+		listImages.add(".\\ImageSmileys\\stup.png");
+		listImages.add(".\\ImageSmileys\\triste.png");
 	}
 
 	private void remplissageListeSmiley()

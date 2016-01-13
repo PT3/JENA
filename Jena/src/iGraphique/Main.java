@@ -17,26 +17,28 @@ public class Main
 	public static void main(String[] args) 
 	{
 		
-        ip = "92.138.249.243";   // Ip du serveur
-        ip = "192.168.1.15";    // Redefinition temporaire pour les tests
-        ip = "localhost";       // Redefinition temporaire pour les tests
-        
-
-        try {
-			socket = new Socket(ip, 2000);
-		} 
-        catch (UnknownHostException e) 
-        {e.printStackTrace();} 
-        catch (IOException e)
-        {e.printStackTrace();}
-        
-        System.out.println("Connexion serveur est etablie");
-        
-        // Lancement de la thread de Connexion
-        threadConn = new Thread(new Connexion(socket));
-        
-		Login l = new Login(300,300, new Client(), socket);
+//        ip = "92.138.249.243";   // Ip du serveur
+//        ip = "192.168.1.15";    // Redefinition temporaire pour les tests
+//        ip = "localhost";       // Redefinition temporaire pour les tests
+//        
+//
+//        try {
+//			socket = new Socket(ip, 2000);
+//		} 
+//        catch (UnknownHostException e) 
+//        {e.printStackTrace();} 
+//        catch (IOException e)
+//        {e.printStackTrace();}
+//        
+//        System.out.println("Connexion serveur est etablie");
+//        
+//        // Lancement de la thread de Connexion
+//        threadConn = new Thread(new Connexion(socket));
+//        
+//		Login l = new Login(300,300, new Client(), socket);
+//		
+//		Inscription i = new Inscription(200,300);
 		
-		/*Inscription i = new Inscription(200,300);*/
+		Principale p = new Principale(500,500);
 	}
 }

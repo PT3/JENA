@@ -9,6 +9,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
@@ -51,6 +53,7 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 		
 		//Définition du onlinePanel
 		onlinePanel = new JPanel();
+		onlinePanel.setBackground(new Color(189,190,240));
 		onlinePanel.setPreferredSize(new Dimension(150,0));
 		
 		//Ajout insets
@@ -61,18 +64,21 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 		//Définition du chatPanel
 		chatPanel= new JPanel();
 		chatPanel.setPreferredSize(new Dimension(350, 200));
-//		chatPanel.setBackground(Color.green);
-		chatScroll = new JScrollPane(chatPanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		chatPanel.setBackground(new Color(237,243,255));
+		chatScroll = new JScrollPane(chatPanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		topPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,onlinePanel, chatScroll);
 		topPanel.setAutoscrolls(true);
 		
 		//Définition du optionPanel
 		
 		optionPanel = new JPanel(new FlowLayout());
+		optionPanel.setBackground(new Color(136,206,227));
 		optionPanel.setPreferredSize(new Dimension(800,40));
 		
 		selecSmilley = new JButton("Smilley");
+		selecSmilley.setBackground(new Color(189,190,240));
 		selecColor = new JButton("Couleur");
+		selecColor.setBackground(new Color(189,190,240));
 		
 		optionPanel.add(selecColor);
 		optionPanel.add(selecSmilley);
@@ -81,6 +87,8 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 		
 		userPanel= new JPanel(new BorderLayout());
 		userText = new JTextArea(5,50);//Hauteur puis Largeur
+		userText.setBackground(new Color(136,206,227));
+		userText.setBorder(BorderFactory.createMatteBorder(4,4,4,4, new Color(105,185,209)));
 		userPanel.add(optionPanel,BorderLayout.NORTH);
 		scrollPane = new JScrollPane(userText);
 		userPanel.add(scrollPane,BorderLayout.CENTER);
@@ -101,7 +109,7 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.setBackground(Color.DARK_GRAY);
+		this.setBackground(new Color(49,232,235));
 		
 		addComponentListener(new ComponentAdapter() 
 		{
@@ -153,17 +161,21 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 				GridBagConstraints c = new GridBagConstraints();
 				c.gridwidth = c.REMAINDER;
 				
+				JScrollBar sb = chatScroll.getVerticalScrollBar();
+				sb.setValue(sb.getMaximum());
+				
 				if (testAlternance)
 				{
-					m = new Message(userText.getText(),color.getColor(), listRetourligne,500,Color.blue);
+					m = new Message(userText.getText(),color.getColor(), listRetourligne,500,new Color(136,206,227));
 					c.insets=c1;
-					
+					sb.setValue(sb.getMaximum());
 					testAlternance = false;
 				}
 				else
 				{
-					m = new Message(userText.getText(),color.getColor(), listRetourligne,500,Color.red);
+					m = new Message(userText.getText(),color.getColor(), listRetourligne,500,new Color(236,158,255));
 					c.insets=c2;
+					sb.setValue(sb.getMaximum());
 					testAlternance = true;
 				}
 				//m = new Message(userText.getText(),color.getColor(), listRetourligne,500,Color.blue);
@@ -174,7 +186,8 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 				mess+=m.getHeight()+5;
 				chatPanel.add(m,c);
 				chatPanel.validate();
-				chatPanel.updateUI();
+				chatPanel.updateUI();;
+				
 				if (mess>chatPanel.getHeight())
 				{
 					chatPanel.setPreferredSize(new Dimension(chatPanel.getWidth(),chatPanel.getHeight()+(mess-chatPanel.getHeight())+5));
