@@ -33,11 +33,12 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 	private JSplitPane topPanel, splitPaneHautBas;
 	private JTextArea userText;
 	private JButton selecSmilley,selecColor;
-	private JScrollPane scrollPane;
+	private JScrollPane scrollPane,chatScroll;
 	private boolean testAlternance;
 	private Insets c1,c2;
 	private SelColor color;
 	private ArrayList<Integer> listRetourligne;
+	private int lastMessageWidth;
 
 	
 	int mess = 0;
@@ -51,7 +52,7 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 		listRetourligne = new ArrayList<Integer>();
 		
 		//Définition du onlinePanel
-		onlinePanel = new JPanel(new FlowLayout());
+		onlinePanel = new JPanel();
 		onlinePanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		onlinePanel.setPreferredSize(new Dimension(150,0));
 		onlinePanel.setBackground(Color.red);
@@ -62,12 +63,12 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 		testAlternance=true;
 		
 		//Définition du chatPanel
-		chatPanel= new JPanel(new GridBagLayout());
+		chatPanel= new JPanel();
 		chatPanel.setPreferredSize(new Dimension(350, 200));
-		chatPanel.setBackground(Color.green);
-		scrollPane = new JScrollPane(chatPanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		topPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,onlinePanel, scrollPane);
-		
+//		chatPanel.setBackground(Color.green);
+		chatScroll = new JScrollPane(chatPanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		topPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,onlinePanel, chatScroll);
+		topPanel.setAutoscrolls(true);
 		
 		//Définition du optionPanel
 		
@@ -182,8 +183,8 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 				chatPanel.validate();
 				chatPanel.updateUI();
 				if (mess>=chatPanel.getHeight()){
-					chatPanel.setPreferredSize(new Dimension(chatPanel.getWidth(),chatPanel.getHeight()+userText.getHeight()));
-				}
+					chatPanel.setPreferredSize(new Dimension(chatPanel.getWidth(),chatPanel.getHeight()+15));
+			}/* Alors là il suffit de trouver la taille en hauteur du message pour régler le PB */
 				chatPanel.repaint();
 				userText.setText("");
 			}
