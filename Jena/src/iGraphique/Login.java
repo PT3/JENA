@@ -196,7 +196,8 @@ public class Login extends JFrame implements ActionListener, FocusListener, KeyL
             else
             {
     			this.dispose();
-        		new Login(300,350, client, socket);
+    			new Principale(500,500);
+        		//new Login(300,350, client, socket);
                 System.err.println("Vos informations sont incorrectes ");
             }
 		
