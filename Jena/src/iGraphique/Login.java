@@ -50,7 +50,7 @@ public class Login extends JFrame implements ActionListener, FocusListener, KeyL
 	/**
 	 *  Label : Login/Password/Mot de passe perdu
 	 */
-	private JLabel lLogin,lPassword,lPsLoose;
+	private JLabel lLogin,lPassword,lPsLoose,lErreur;
 	/**
 	 * CheckBox : Se souvenir de moi;
 	 */
@@ -86,6 +86,38 @@ public class Login extends JFrame implements ActionListener, FocusListener, KeyL
 		bouton = new JPanel();
 		log = new JPanel();
 		log.setLayout(gL);
+		construireFenetre();
+	}
+	
+	public Login(int x,int y,String erreur,Client client, Socket socket)
+	{
+		super("Connexion : ");
+		this.client=client;
+		this.socket=socket;
+		setPreferredSize(new Dimension(x,y));
+		b_inscription = new JButton("Inscription");
+		b_inscription.addActionListener(this);
+		b_connexion = new JButton("Connexion");
+		b_connexion.addActionListener(this);
+		lErreur = new JLabel("Mauvais mot de passe/login");
+		lLogin = new JLabel("Login(*)");
+		lPassword = new JLabel("Password(*)");
+		tfLogin = new JTextField("Obligatoire",20);
+		tfLogin.addFocusListener(this);
+		tfPassword = new JPasswordField("password",20);
+		tfPassword.addFocusListener(this);
+		rememberMe = new JCheckBox("Se souvenir de moi");
+		lPsLoose = new JLabel("Mot de passe oublié ?");
+		principale = new JPanel(new FlowLayout());
+		bouton = new JPanel();
+		log = new JPanel();
+		log.setLayout(new GridLayout(8,1));
+		construireFenetreErreur();	
+	}
+	
+	private void construireFenetreErreur()
+	{
+		log.add(lErreur);
 		construireFenetre();
 	}
 	/**
@@ -164,8 +196,7 @@ public class Login extends JFrame implements ActionListener, FocusListener, KeyL
             else
             {
     			this.dispose();
-    			Principale p = new Principale(500,500);
-        		//Login lp = new Login(250,320, client, socket);
+        		new Login(300,350, client, socket);
                 System.err.println("Vos informations sont incorrectes ");
             }
 		
@@ -185,7 +216,7 @@ public class Login extends JFrame implements ActionListener, FocusListener, KeyL
         	 */
         	if (source == b_inscription)
         	{
-        		Inscription i = new Inscription(500,500);
+        		Inscription i = new Inscription(300,400);
         		i.setVisible(true);
         		this.setVisible(false);
         	}

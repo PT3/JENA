@@ -35,7 +35,7 @@ public class Main
         // Lancement de la thread de Connexion
         threadConn = new Thread(new Connexion(socket));
         
-		Login l = new Login(300,400, new Client(), socket);
+		Login l = new Login(300,300, new Client(), socket);
 		
 		/*Inscription i = new Inscription(200,300);*/
 	}
