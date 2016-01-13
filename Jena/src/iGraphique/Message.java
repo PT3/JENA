@@ -49,6 +49,14 @@ public class Message extends JPanel
 		setPreferredSize(new Dimension(x,y));
 	}
 	
+	public int getHeight()
+	{
+		return y;
+	}
+	public int getWidth()
+	{
+		return x;
+	}
 	private void remplissageListeImages() 
 	{
 		listImages.add(".\\ImageSmileys\\barbouille.jpg");
@@ -64,8 +72,6 @@ public class Message extends JPanel
 		listImages.add(".\\ImageSmileys\\pleure.jpg");
 		listImages.add(".\\ImageSmileys\\stup.jpg");
 		listImages.add(".\\ImageSmileys\\triste.jpg");
-		
-		
 	}
 
 	private void remplissageListeSmiley()

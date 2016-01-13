@@ -39,9 +39,7 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 	private SelColor color;
 	private ArrayList<Integer> listRetourligne;
 	private int lastMessageWidth;
-
-	
-	int mess = 0;
+	private int mess = 0;
 	//Boolean de test Shift 
 	private boolean testShift;
 	
@@ -53,9 +51,7 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 		
 		//Définition du onlinePanel
 		onlinePanel = new JPanel();
-		onlinePanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		onlinePanel.setPreferredSize(new Dimension(150,0));
-		onlinePanel.setBackground(Color.red);
 		
 		//Ajout insets
 		c2= new Insets(5,100,10,0);
@@ -66,7 +62,7 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 		chatPanel= new JPanel();
 		chatPanel.setPreferredSize(new Dimension(350, 200));
 //		chatPanel.setBackground(Color.green);
-		chatScroll = new JScrollPane(chatPanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		chatScroll = new JScrollPane(chatPanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		topPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,onlinePanel, chatScroll);
 		topPanel.setAutoscrolls(true);
 		
@@ -85,11 +81,9 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 		
 		userPanel= new JPanel(new BorderLayout());
 		userText = new JTextArea(5,50);//Hauteur puis Largeur
-		userText.setBackground(Color.black);
 		userPanel.add(optionPanel,BorderLayout.NORTH);
 		scrollPane = new JScrollPane(userText);
 		userPanel.add(scrollPane,BorderLayout.CENTER);
-		userPanel.setBackground(Color.blue);
 		
 		//DÃ©finition des Listener
 		userText.addKeyListener(this);
@@ -124,8 +118,6 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 				userText.setSize(new Dimension(w,h/5));
 				scrollPane.setSize(new Dimension(w,h/5));
 				optionPanel.setSize(new Dimension(w,40));
-
-				userText.setBackground(Color.yellow);
 				validate();
 			}
 		});
@@ -165,6 +157,7 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 				{
 					m = new Message(userText.getText(),color.getColor(), listRetourligne,500,Color.blue);
 					c.insets=c1;
+					
 					testAlternance = false;
 				}
 				else
@@ -178,13 +171,14 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 				
 				//Permet de désactiver l'effet originelle de l'action d'un JTextArea
 				e.consume();
-				mess+=userText.getHeight();
+				mess+=m.getHeight()+5;
 				chatPanel.add(m,c);
 				chatPanel.validate();
 				chatPanel.updateUI();
-				if (mess>=chatPanel.getHeight()){
-					chatPanel.setPreferredSize(new Dimension(chatPanel.getWidth(),chatPanel.getHeight()+15));
-			}/* Alors là il suffit de trouver la taille en hauteur du message pour régler le PB */
+				if (mess>chatPanel.getHeight())
+				{
+					chatPanel.setPreferredSize(new Dimension(chatPanel.getWidth(),chatPanel.getHeight()+(mess-chatPanel.getHeight())+5));
+				}/* Alors là il suffit de trouver la taille en hauteur du message pour régler le PB */
 				chatPanel.repaint();
 				userText.setText("");
 			}
