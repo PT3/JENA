@@ -5,25 +5,25 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.net.NoRouteToHostException;
-import java.nio.charset.spi.CharsetProvider;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.*;
 
 import affichage.Message;
+import client.Chat;
+import client.Client;
+import client.Envoie;
 
 
 public class Principale extends JFrame implements ActionListener , KeyListener
@@ -32,25 +32,29 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 	private JTextField mess;
 	private JPanel connecte, chat, message,global,chatMess;*/ 
 	
-	private JPanel mainPanel, userPanel, chatPanel, onlinePanel, optionPanel;
+	protected JPanel mainPanel, userPanel, chatPanel, onlinePanel, optionPanel;
 	private JSplitPane topPanel, splitPaneHautBas;
-	private JTextArea userText;
+	protected JTextArea userText;
 	private JButton selecSmilley,selecColor;
-	private JScrollPane scrollPane,chatScroll;
-	private boolean testAlternance;
-	private Insets c1,c2;
-	private SelColor color;
-	private ArrayList<Integer> listRetourligne;
-	private int lastMessageWidth;
-	private int mess = 0;
-	//Boolean de test Shift 
+	protected JScrollPane scrollPane,chatScroll;
+	protected boolean testAlternance;
+	protected Insets c1,c2;
+	protected SelColor color;
+	protected ArrayList<Integer> listRetourligne;
+	protected int mess = 0;
 	private boolean testShift;
+	private Socket socket;
+	private Thread tRecep,tMessage;
+	private BufferedReader in;
+	private String logUser;
 	
-	public Principale(int x, int y)
+	public Principale(int x, int y,Socket socket,BufferedReader in,String login)
 	{
 		this.color =new SelColor();
-		
+		this.socket=socket;
+		this.in=in;
 		listRetourligne = new ArrayList<Integer>();
+		logUser=login;
 		
 		//Définition du onlinePanel
 		onlinePanel = new JPanel();
@@ -120,22 +124,20 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 				//System.out.println("Fenetre modifier");
 				Dimension dim = getSize();
 				int h = dim.height;
-				int w = dim.width;
-				System.out.println(h);
-				System.out.println(w);
-				
+				int w = dim.width;	
 				userText.setSize(new Dimension(w,h/5));
 				scrollPane.setSize(new Dimension(w,h/5));
 				optionPanel.setSize(new Dimension(w,40));
 				validate();
 			}
 		});
+		tRecep=new Thread(new Reception(in,this));
+		tRecep.start();
+
 	}
 	
 	public void actionPerformed(ActionEvent e)
-	{
-		userText.setText("test");
-		
+	{	
 		Object source = e.getSource();
 		
 		if(source.equals(selecColor))
@@ -155,48 +157,32 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 		if(e.getKeyCode() == KeyEvent.VK_ENTER)
 		{
 			if (!testShift)
-			{
+			{	
 				listRetourligne.add(userText.getText().length());
-				Message m  = null;
-				
-				GridBagConstraints c = new GridBagConstraints();
-				c.gridwidth = c.REMAINDER;
-				
-				JScrollBar sb = chatScroll.getVerticalScrollBar();
-				sb.setValue(sb.getMaximum());
-				
-				if (testAlternance)
-				{
-					m = new Message(userText.getText(),color.getColor(), listRetourligne,500,new Color(136,206,227));
-					c.insets=c1;
-					testAlternance = false;
-				}
-				else
-				{
-					m = new Message(userText.getText(),color.getColor(), listRetourligne,500,new Color(236,158,255));
-					c.insets=c2;
-					testAlternance = true;
-				}
-				//m = new Message(userText.getText(),color.getColor(), listRetourligne,500,Color.blue);
-				listRetourligne.clear();
-				
-				//Permet de désactiver l'effet originelle de l'action d'un JTextArea
-				e.consume();
-				mess+=m.getHeight()+5;
-				chatPanel.add(m,c);
-				chatPanel.validate();
-				chatPanel.updateUI();;
-				
-				if (mess>chatPanel.getHeight())
-				{
-					chatPanel.setPreferredSize(new Dimension(chatPanel.getWidth(),chatPanel.getHeight()+(mess-chatPanel.getHeight())+5));
-				}/* Alors là il suffit de trouver la taille en hauteur du message pour régler le PB */
-				chatPanel.repaint();
+				BufferedReader in = null;   // Receveur
+			    PrintWriter out = null;     // Envoyeur
+			    
+		        // Initialisation de l'envoyeur
+		        try {
+					out = new PrintWriter(socket.getOutputStream());
+				} 
+		        catch (IOException e2) 
+		        {e2.printStackTrace();}
+		        
+		        // Initialisation du receveur
+		        try {
+					in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+					} 
+		        catch (IOException e2)
+		        	{e2.printStackTrace();}
+
+		            out.println(userText.getText());     // Saisi du login et placer dans le buffer
+		            out.flush();        				
 				userText.setText("");
+				e.consume();
 			}
 			else
 			{
-				listRetourligne.add(userText.getText().length());
 				userText.setText(userText.getText()+"\n");
 			}
 		}
@@ -213,6 +199,41 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 	public void keyTyped(KeyEvent e) 
 	{
 		
+	}
+	
+	public void reception(String message)
+	{
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridwidth = c.REMAINDER;
+		Message m  = null;
+		JScrollBar sb = chatScroll.getVerticalScrollBar();
+		sb.setValue(sb.getMaximum());
+		String test[]= message.split(" ");
+		if (test[0].equals(logUser))
+		{
+			m = new Message(message,color.getColor(),500,new Color(136,206,227));
+			System.out.println(message);
+			c.insets=c1;
+			testAlternance = false;
+		}
+		else
+		{
+			m=new Message(message,color.getColor(),500,new Color(236,158,255));
+			c.insets=c2;
+			testAlternance = true;
+		}
+		//m = new Message(userText.getText(),color.getColor(), listRetourligne,500,Color.blue);
+		listRetourligne.clear();
+		mess+=m.getHeight()+5;
+		chatPanel.add(m,c);
+		chatPanel.validate();
+		chatPanel.updateUI();;
+		
+		if (mess>chatPanel.getHeight())
+		{
+			chatPanel.setPreferredSize(new Dimension(chatPanel.getWidth(),chatPanel.getHeight()+(mess-chatPanel.getHeight())+5));
+		}
+		chatPanel.repaint();
 	}
 
 }

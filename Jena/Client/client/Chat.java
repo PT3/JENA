@@ -1,6 +1,9 @@
 package client;
 
 import java.util.Scanner;
+
+import affichage.Reception;
+
 import java.net.*;
 import java.io.*;
 

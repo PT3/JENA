@@ -1,24 +1,31 @@
-package client;
+package affichage;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 
+import client.Chat;
 
 public class Reception implements Runnable
 {
     
-    private String message = null;  // Allocation memoire pour les messages recus
+    public String message = null;  // Allocation memoire pour les messages recus
     private BufferedReader in;      // Receveur
-
+    private Principale p;
     
     /**
      * Constructeur de Reception
      * @param in
      */
+    public Reception(BufferedReader in,Principale p)
+    {
+        this.in = in;
+        this.p=p;
+    }
     public Reception(BufferedReader in)
     {
         this.in = in;
     }
+
 
     
     /**
@@ -35,7 +42,9 @@ public class Reception implements Runnable
                 {
                 	Chat.getInstance().quit();
                 }
-                System.out.println(message);    // Affichage du message
+                System.out.println(message);
+                p.reception(message);
+                 // Affichage du message
             }
             catch (IOException e)
             {

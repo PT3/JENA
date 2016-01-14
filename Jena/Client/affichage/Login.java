@@ -35,6 +35,7 @@ public class Login extends JFrame implements ActionListener, FocusListener, KeyL
 	public static String passConnection;
 	private Client client;
 	private Socket socket;
+	private String login;
 	/**
 	 * Boutton d'inscription et d'invitation
 	 */
@@ -64,10 +65,9 @@ public class Login extends JFrame implements ActionListener, FocusListener, KeyL
 	 * @param x : Taille en x
 	 * @param y : Taille en y
 	 */
-	public Login(int x, int y,Client client, Socket socket)
+	public Login(int x, int y,Socket socket)
 	{	
 		super("Connexion : ");
-		this.client=client;
 		this.socket=socket;
 		setPreferredSize(new Dimension(x,y));
 		b_inscription = new JButton("Inscription");
@@ -166,11 +166,12 @@ public class Login extends JFrame implements ActionListener, FocusListener, KeyL
         // Initialisation du receveur
         try {
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		} 
+			} 
         catch (IOException e2)
-        {e2.printStackTrace();}
+        	{e2.printStackTrace();}
 
-            out.println(tfLogin.getText());     // Saisi du login et placer dans le buffer
+            out.println(tfLogin.getText()); 
+            login=tfLogin.getText();
             out.flush();        				// Envoie de la saisi du login et vidage du buffer
             
             out.println(tfPassword.getText());  // Saisi du password et placer dans le buffer
@@ -188,17 +189,16 @@ public class Login extends JFrame implements ActionListener, FocusListener, KeyL
             if(verif)
             {
                 System.out.println("Je suis connecte ");
-                Principale p = new Principale(500,500);
+                Principale p = new Principale(500,500,socket,in,login);
     			p.setVisible(true);
-    			this.setVisible(false);
+    			this.dispose();
             }
             // Si les informations sont incorrectes
             else
             {
     			this.dispose();
-    			new Principale(500,500);
+    			new Principale(500,500,socket,in,login);
         		//new Login(300,350, client, socket);
-                System.err.println("Vos informations sont incorrectes ");
             }
 		
 		logConnection = tfLogin.getText();

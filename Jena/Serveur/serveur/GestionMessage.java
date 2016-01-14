@@ -32,18 +32,13 @@ public class GestionMessage implements Runnable
             out = new PrintWriter(socket.getOutputStream());
 		    String pass = null;
             while(!authentifier)
-            {
-
-                out.println("Entrez votre login : ");
-                out.flush();		
-                login = in.readLine();	
-                out.println("Entrez votre mot de passe : ");
-                out.flush();			
+            {	
+                login = in.readLine();		
                 pass = in.readLine();
                 if(isValid(login, pass))
                 {
                     out.println("true");   
-                    System.out.println(login + " vient de se connecter ");
+                    System.out.println(login + " vient de se consnecter ");
                     out.flush();
                     authentifier = true;
                 }

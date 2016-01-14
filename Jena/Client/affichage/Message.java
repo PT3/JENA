@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -17,10 +18,11 @@ public class Message extends JPanel
 	private ArrayList<String> listMessages;
 	private ArrayList<String> listSmiley;
 	private ArrayList<String> listImages;
+	private  ArrayList<Integer> list;
 	private int largeur;
 	private Color colorBack;
 	
-	public Message(String a, Color c, ArrayList<Integer> list,int la,Color colora)
+	public Message(String a, Color c,int la,Color colora)
 	{
 		colorBack = colora;
 		texte = a;
@@ -28,25 +30,17 @@ public class Message extends JPanel
 		listMessages = new ArrayList<String>();
 		listSmiley = new ArrayList<String>();
 		listImages = new ArrayList<String>();
-		
+		this.list=list;
 		remplissageListeSmiley();
 		remplissageListeImages();
-		
+		listMessages.add(a);
 		largeur = la;
-		
-	//Effectue la séparation entre tout les retours à la ligne dans un message 
-		for (int i = 0, j = 0; i < list.size(); i++) 
-		{
-			System.out.println(texte.substring(j,list.get(i)));
-			listMessages.add(texte.substring(j,list.get(i)));
-			j = list.get(i);
-		}
-		
 		x = (int)largeur;
 		y = listMessages.size()*20;
-				
-
 		setPreferredSize(new Dimension(x,y));
+		
+	//Effectue la séparation entre tout les retours à la ligne dans un message 
+		
 	}
 	
 	public int getHeight()

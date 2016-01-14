@@ -21,18 +21,21 @@ public class Envoie implements Runnable
         this.out = out;
     }
     
+    public Envoie(String messsage)
+    {
+    	this.message=message;
+    }
+    
     
     /**
      * Lancement de la thread qui envoie les messages
      */
     public void run()
-    {
-        sc = new Scanner(System.in);    // Initilisation du scanner
-        
+    { 
+    	sc=new Scanner(System.in);
         while(true){
-            message = sc.nextLine();    // Saisi du message
             out.println(message);
-
+            sc.nextLine();
             out.flush();       // Envoie et vidage du contenu du buffer
 
         }

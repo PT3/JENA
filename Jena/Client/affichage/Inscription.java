@@ -105,23 +105,5 @@ public class Inscription extends JFrame implements ActionListener
 		log = TextLogin;
 		pass = TextPassword;
 		pass2 = TextConfirmPassword;
-		/*
-		BdVerif verif1 = new BdVerif();
-		BdInscription insc = new BdInscription();
-		
-		boolean validPass = verif1.EqualPassword(m, log, pass, pass2);
-		
-		if(validPass)
-		{
-			insc.BdInscriptionConf(m, log, pass, pass2);
-			Login l = new Login(250,320);
-			this.dispose();
-		}
-		
-		else
-		{
-			InscriptionPass ip = new InscriptionPass(500,500);
-			this.dispose();
-		}*/
 	}
 }

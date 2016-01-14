@@ -21,7 +21,6 @@ public class Main
         ip = "192.168.1.15";    // Redefinition temporaire pour les tests
         ip = "localhost";       // Redefinition temporaire pour les tests
         
-
         try {
 			socket = new Socket(ip, 2000);
 		} 
@@ -35,6 +34,6 @@ public class Main
         // Lancement de la thread de Connexion
         threadConn = new Thread(new Connexion(socket));
         
-		Login l = new Login(300,300, new Client(), socket);
+		new Login(300,300,socket);
 	}
 }
