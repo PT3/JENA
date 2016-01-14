@@ -5,16 +5,25 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.net.NoRouteToHostException;
+import java.nio.charset.spi.CharsetProvider;
 import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.*;
 
+import affichage.Message;
 
 
 public class Principale extends JFrame implements ActionListener , KeyListener
@@ -27,12 +36,13 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 	private JSplitPane topPanel, splitPaneHautBas;
 	private JTextArea userText;
 	private JButton selecSmilley,selecColor;
-	private JScrollPane scrollPane;
+	private JScrollPane scrollPane,chatScroll;
 	private boolean testAlternance;
 	private Insets c1,c2;
 	private SelColor color;
 	private ArrayList<Integer> listRetourligne;
-
+	private int lastMessageWidth;
+	private int mess = 0;
 	//Boolean de test Shift 
 	private boolean testShift;
 	
@@ -43,30 +53,33 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 		listRetourligne = new ArrayList<Integer>();
 		
 		//Définition du onlinePanel
-		onlinePanel = new JPanel(new FlowLayout());
-		onlinePanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		onlinePanel = new JPanel();
+		onlinePanel.setBackground(new Color(189,190,240));
 		onlinePanel.setPreferredSize(new Dimension(150,0));
-		onlinePanel.setBackground(Color.red);
 		
 		//Ajout insets
-		c1= new Insets(20,30,50,0);
-		c2= new Insets(20,50,30,0);
+		c2= new Insets(5,100,10,0);
+		c1= new Insets(5,0,10,100);
 		testAlternance=true;
 		
 		//Définition du chatPanel
 		chatPanel= new JPanel();
-		chatPanel.setPreferredSize(new Dimension(350, 400));
-		chatPanel.setBackground(Color.green);
-		topPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,onlinePanel, chatPanel);
-		
+		chatPanel.setPreferredSize(new Dimension(350, 200));
+		chatPanel.setBackground(new Color(237,243,255));
+		chatScroll = new JScrollPane(chatPanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		topPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,onlinePanel, chatScroll);
+		topPanel.setAutoscrolls(true);
 		
 		//Définition du optionPanel
 		
 		optionPanel = new JPanel(new FlowLayout());
+		optionPanel.setBackground(new Color(136,206,227));
 		optionPanel.setPreferredSize(new Dimension(800,40));
 		
 		selecSmilley = new JButton("Smilley");
+		selecSmilley.setBackground(new Color(189,190,240));
 		selecColor = new JButton("Couleur");
+		selecColor.setBackground(new Color(189,190,240));
 		
 		optionPanel.add(selecColor);
 		optionPanel.add(selecSmilley);
@@ -75,11 +88,11 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 		
 		userPanel= new JPanel(new BorderLayout());
 		userText = new JTextArea(5,50);//Hauteur puis Largeur
-		userText.setBackground(Color.black);
+		userText.setBackground(new Color(136,206,227));
+		userText.setBorder(BorderFactory.createMatteBorder(4,4,4,4, new Color(105,185,209)));
 		userPanel.add(optionPanel,BorderLayout.NORTH);
 		scrollPane = new JScrollPane(userText);
 		userPanel.add(scrollPane,BorderLayout.CENTER);
-		userPanel.setBackground(Color.blue);
 		
 		//DÃ©finition des Listener
 		userText.addKeyListener(this);
@@ -97,13 +110,14 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.setBackground(Color.DARK_GRAY);
+		this.setBackground(new Color(49,232,235));
 		
 		addComponentListener(new ComponentAdapter() 
 		{
 
 			public void componentResized(ComponentEvent e) 
 			{
+				//System.out.println("Fenetre modifier");
 				Dimension dim = getSize();
 				int h = dim.height;
 				int w = dim.width;
@@ -113,8 +127,6 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 				userText.setSize(new Dimension(w,h/5));
 				scrollPane.setSize(new Dimension(w,h/5));
 				optionPanel.setSize(new Dimension(w,40));
-
-				userText.setBackground(Color.yellow);
 				validate();
 			}
 		});
@@ -122,6 +134,7 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 	
 	public void actionPerformed(ActionEvent e)
 	{
+		userText.setText("test");
 		
 		Object source = e.getSource();
 		
@@ -149,28 +162,35 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 				GridBagConstraints c = new GridBagConstraints();
 				c.gridwidth = c.REMAINDER;
 				
+				JScrollBar sb = chatScroll.getVerticalScrollBar();
+				sb.setValue(sb.getMaximum());
+				
 				if (testAlternance)
 				{
-					m = new Message(userText.getText(),color.getColor(), listRetourligne,500,Color.blue);
+					m = new Message(userText.getText(),color.getColor(), listRetourligne,500,new Color(136,206,227));
 					c.insets=c1;
 					testAlternance = false;
 				}
 				else
 				{
-					m = new Message(userText.getText(),color.getColor(), listRetourligne,500,Color.red);
+					m = new Message(userText.getText(),color.getColor(), listRetourligne,500,new Color(236,158,255));
 					c.insets=c2;
 					testAlternance = true;
-					
 				}
 				//m = new Message(userText.getText(),color.getColor(), listRetourligne,500,Color.blue);
 				listRetourligne.clear();
 				
 				//Permet de désactiver l'effet originelle de l'action d'un JTextArea
 				e.consume();
-				
+				mess+=m.getHeight()+5;
 				chatPanel.add(m,c);
 				chatPanel.validate();
-				chatPanel.updateUI();
+				chatPanel.updateUI();;
+				
+				if (mess>chatPanel.getHeight())
+				{
+					chatPanel.setPreferredSize(new Dimension(chatPanel.getWidth(),chatPanel.getHeight()+(mess-chatPanel.getHeight())+5));
+				}/* Alors là il suffit de trouver la taille en hauteur du message pour régler le PB */
 				chatPanel.repaint();
 				userText.setText("");
 			}

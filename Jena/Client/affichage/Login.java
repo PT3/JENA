@@ -4,7 +4,7 @@
  * @author Julien
  */
 
-package iGraphique;
+package affichage;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -196,7 +196,8 @@ public class Login extends JFrame implements ActionListener, FocusListener, KeyL
             else
             {
     			this.dispose();
-        		new Login(300,350, client, socket);
+    			new Principale(500,500);
+        		//new Login(300,350, client, socket);
                 System.err.println("Vos informations sont incorrectes ");
             }
 		
@@ -216,7 +217,7 @@ public class Login extends JFrame implements ActionListener, FocusListener, KeyL
         	 */
         	if (source == b_inscription)
         	{
-        		Inscription i = new Inscription(300,400);
+        		Inscription i = new Inscription(300,400,client,socket);
         		i.setVisible(true);
         		this.setVisible(false);
         	}
