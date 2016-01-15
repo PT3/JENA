@@ -4,12 +4,15 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.*;
 
+/**
+ * Classe qui gère l'affichage des messages dans la fenêtre Principale
+ * @author Julien
+ *
+ */
 public class Message extends JPanel
 {
 	private String texte;
@@ -19,38 +22,55 @@ public class Message extends JPanel
 	private ArrayList<String> listSmiley;
 	private ArrayList<String> listImages;
 	private  ArrayList<Integer> list;
-	private int largeur;
 	private Color colorBack;
 	
-	public Message(String a, Color c,int la,Color colora)
+	/**
+	 * Constructeur d'un Message
+	 * @param message : contenu du message
+	 * @param colorText : Couleur du texte
+	 * @param largeur : Largeur du message 
+	 * @param colorFond: Couleur de fond du message
+	 */
+	public Message(String message, Color colorText,int largeur,Color colorFond)
 	{
-		colorBack = colora;
-		texte = a;
-		color = c;
+		colorBack = colorFond;
+		texte = message;
+		color = colorText;
 		listMessages = new ArrayList<String>();
 		listSmiley = new ArrayList<String>();
 		listImages = new ArrayList<String>();
 		this.list=list;
 		remplissageListeSmiley();
 		remplissageListeImages();
-		listMessages.add(a);
-		largeur = la;
-		x = (int)largeur;
+		listMessages.add(texte);
+		x = largeur;
 		y = listMessages.size()*20;
 		setPreferredSize(new Dimension(x,y));
 		
 	//Effectue la séparation entre tout les retours à la ligne dans un message 
 		
 	}
-	
+	/**
+	 * Retourne la hauteur
+	 * @return y: Hauteur
+	 */
 	public int getHeight()
 	{
 		return y;
 	}
+	
+	/**
+	 * Retourne la largeur
+	 * @return y: Largeur
+	 */
 	public int getWidth()
 	{
 		return x;
 	}
+	
+	/**
+	 * Associe à listImages des smileys 
+	 */
 	private void remplissageListeImages() 
 	{
 		listImages.add(".\\ImageSmileys\\barbouille.png");
@@ -68,6 +88,9 @@ public class Message extends JPanel
 		listImages.add(".\\ImageSmileys\\triste.png");
 	}
 
+	/**
+	 * Associe à ListeSmiley les Smileys gérés par le chat
+	 */
 	private void remplissageListeSmiley()
 	{
 		listSmiley.add(":S");
@@ -86,6 +109,9 @@ public class Message extends JPanel
 		listSmiley.add(":(");
 	}
 
+	/**
+	 * Dessin du message
+	 */
 	public void paintComponent(Graphics g)
 	{
 		//Set la couler de fond
@@ -154,10 +180,5 @@ public class Message extends JPanel
 				g.drawString(listMessages.get(i), 5, 15+20*i);
 			
 		}
-	}
-	
-	public int getW()
-	{
-		return y;
 	}
 }

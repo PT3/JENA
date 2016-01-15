@@ -21,11 +21,12 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 import affichage.Message;
-import client.Chat;
-import client.Client;
-import client.Envoie;
 
 
+/**
+ * Fenêtre Principale, contient le chat
+ * @author Julien
+ */
 public class Principale extends JFrame implements ActionListener , KeyListener
 {
 	/*private JButton send;
@@ -44,10 +45,19 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 	protected int mess = 0;
 	private boolean testShift;
 	private Socket socket;
-	private Thread tRecep,tMessage;
+	private Thread tRecep;
 	private BufferedReader in;
 	private String logUser;
+	private PrintWriter out = null;  
 	
+	/**
+	 * 
+	 * @param x: Largeur de la fenêtre
+	 * @param y : Hauteur de la fenêtre
+	 * @param socket: Connexion au serveur
+	 * @param in : Entrée des messages 
+	 * @param login : Login de l'utilisateur ayant la fenêtre ouverte
+	 */
 	public Principale(int x, int y,Socket socket,BufferedReader in,String login)
 	{
 		this.color =new SelColor();
@@ -115,7 +125,21 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setBackground(new Color(49,232,235));
-		
+		/**
+		 * Réaffectation de la croix (quitter)
+		 */
+		this.addWindowListener(new java.awt.event.WindowAdapter() 
+		{
+			 public void windowClosing(java.awt.event.WindowEvent windowEvent)
+			 {
+				 out.println("quit");     // Saisi du login et placer dans le buffer
+		         out.flush();     
+			 }
+		});
+
+		/**
+		 * Vérifie les modifications de tailles de la fenêtre
+		 */
 		addComponentListener(new ComponentAdapter() 
 		{
 
@@ -135,7 +159,9 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 		tRecep.start();
 
 	}
-	
+	/**
+	 * Gestion de l'appui sur les boutons, seul Couleur est fonctionnel
+	 */
 	public void actionPerformed(ActionEvent e)
 	{	
 		Object source = e.getSource();
@@ -146,7 +172,10 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 			JOptionPane.showInputDialog(color);
 		}
 	}
-
+	
+	/**
+	 * Gestion de l'appui sur les touches , SHIFT + ENTREE = Saut de ligne , ENTREE = Envoie
+	 */
 	public void keyPressed(KeyEvent e) 
 	{
 		if(e.getKeyCode()==KeyEvent.VK_SHIFT)
@@ -159,8 +188,7 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 			if (!testShift)
 			{	
 				listRetourligne.add(userText.getText().length());
-				BufferedReader in = null;   // Receveur
-			    PrintWriter out = null;     // Envoyeur
+   // Envoyeur
 			    
 		        // Initialisation de l'envoyeur
 		        try {
@@ -187,7 +215,10 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 			}
 		}
 	}
-
+	
+	/**
+	 * Gestion des touches relachés , indique quand Shift est relaché
+	 */
 	public void keyReleased(KeyEvent e) 
 	{
 	
@@ -201,6 +232,10 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 		
 	}
 	
+	/**
+	 * Reçoit et gère les messages reçus
+	 * @param message: Message reçu (String)
+	 */
 	public void reception(String message)
 	{
 		GridBagConstraints c = new GridBagConstraints();
@@ -235,6 +270,7 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 		}
 		chatPanel.repaint();
 	}
+	
 
 }
 		

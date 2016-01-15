@@ -3,24 +3,15 @@ package affichage;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-
 import javax.swing.*;
-
-import client.Client;
 
 
 /* Page d'inscription, 
@@ -34,7 +25,6 @@ public class Inscription extends JFrame implements ActionListener
 	public static String log;
 	public static String pass;
 	public static String pass2;
-	
 	//Instanciation des différents éléments graphiques
 	private JPanel mainPanel,inscriptionPanel;
 	private JTextField tfLogin,tfEmail;
@@ -42,13 +32,17 @@ public class Inscription extends JFrame implements ActionListener
 	private JLabel lLogin,lPassword,lConfirmPassword,lEmail;
 	private JButton bValider;
 	private Socket socket;
-	private Client client;
+
 	
-	/* Constructeur de la fenêtre, prends en paramètre la longueur ( int X) et la longueur (int Y)de la fenêtre */
-	public Inscription(int x,int y,Client client,Socket socket)
+	/**
+	 * Constructeur de la fenêtre d'Inscriptiion
+	 *@param x: Largeur de la fenêtre
+	 *@param y: Longueur de la fenêtre
+	 *@param socket: Connexion au serveur
+	 */
+	public Inscription(int x,int y,Socket socket)
 	{
 		super("Inscription");
-		this.client=client;
 		this.socket=socket;
 		//Initialisation des éléments graphiques
 		inscriptionPanel = new JPanel( new GridLayout(9,1));
@@ -93,17 +87,63 @@ public class Inscription extends JFrame implements ActionListener
 		this.setBackground(Color.DARK_GRAY);
 	}
 
-	/* Actions effectuées lorsque l'utilisateur appuie sur le bouton valider*/
+	/**
+	 * Actions effectuées lorsque l'utilisateur appuie sur le bouton valider (envoie du formulaire au serveur)
+	 * Nécessite une validation du serveur
+	 * */
 	public void actionPerformed(ActionEvent e)
 	{
-		String TextLogin = tfLogin.getText();
-		String TextEmail = tfEmail.getText();
-		String TextPassword = tfPassword.getText();
-		String TextConfirmPassword = tfConfirmPassword.getText();
+		String Login = tfLogin.getText();
+		String Email = tfEmail.getText();
+		String Password = tfPassword.getText();
+		String ConfirmPassword = tfConfirmPassword.getText();
 		
-		m = TextEmail;
-		log = TextLogin;
-		pass = TextPassword;
-		pass2 = TextConfirmPassword;
+	    BufferedReader in = null;   // Receveur
+	    PrintWriter out = null;     // Envoyeur
+	    
+        // Initialisation de l'envoyeur
+        try {
+			out = new PrintWriter(socket.getOutputStream());
+		} 
+        catch (IOException e2) 
+        {e2.printStackTrace();}
+        
+        // Initialisation du receveur
+        try {
+			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			} 
+        catch (IOException e2)
+        	{e2.printStackTrace();}
+
+        	out.println("¤Inscription¤");
+        	out.flush();
+            out.println(Login); 
+            out.flush();        			
+            out.println(Password); 
+            out.flush(); 
+            out.println(ConfirmPassword); 
+            out.flush();
+            out.println(Email);  
+            out.flush();
+            boolean verif = false;
+            
+			try {
+				verif = in.readLine().equals("true");
+	            if(verif)//Si le serveur valide l'inscription on relance un Login
+	            {
+	                System.out.println("Inscription validée ");
+	               new Login(300,300,socket);
+	    			this.dispose();
+	            }
+	            // Si les informations sont incorrectes on recrée une page d'inscription
+	            else
+	            {
+	            	new Inscription(300,350,socket);
+	            	this.dispose();
+	        		
+	            }
+			}
+			catch (IOException e1)
+			{e1.printStackTrace();}
 	}
 }

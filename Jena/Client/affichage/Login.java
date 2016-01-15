@@ -24,16 +24,13 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.*;
 import java.io.*;
-
 import javax.swing.*;
 
-import client.Client;
 
 public class Login extends JFrame implements ActionListener, FocusListener, KeyListener
 {
 	public static String logConnection;
 	public static String passConnection;
-	private Client client;
 	private Socket socket;
 	private String login;
 	/**
@@ -64,6 +61,7 @@ public class Login extends JFrame implements ActionListener, FocusListener, KeyL
 	 * Constructeur de fenetre : Implémentation des éléments utiles
 	 * @param x : Taille en x
 	 * @param y : Taille en y
+	 * @param socket: Socket, connexion avec le serveur
 	 */
 	public Login(int x, int y,Socket socket)
 	{	
@@ -89,10 +87,17 @@ public class Login extends JFrame implements ActionListener, FocusListener, KeyL
 		construireFenetre();
 	}
 	
-	public Login(int x,int y,String erreur,Client client, Socket socket)
+	/**
+	 * Constructeur de fenetre avec erreur : Implémentation des éléments utiles
+	 * @param x : Taille en x
+	 * @param y : Taille en y
+	 * @param erreur: Notifie une erreur dans les identifiants
+	 * @param socket: Socket, connexion avec le serveur
+	 */
+	
+	public Login(int x,int y,String erreur, Socket socket)
 	{
 		super("Connexion : ");
-		this.client=client;
 		this.socket=socket;
 		setPreferredSize(new Dimension(x,y));
 		b_inscription = new JButton("Inscription");
@@ -102,7 +107,7 @@ public class Login extends JFrame implements ActionListener, FocusListener, KeyL
 		lErreur = new JLabel("Mauvais mot de passe/login");
 		lLogin = new JLabel("Login(*)");
 		lPassword = new JLabel("Password(*)");
-		tfLogin = new JTextField("Obligatoire",20);
+		tfLogin = new JTextField("Login",20);
 		tfLogin.addFocusListener(this);
 		tfPassword = new JPasswordField("password",20);
 		tfPassword.addFocusListener(this);
@@ -115,6 +120,7 @@ public class Login extends JFrame implements ActionListener, FocusListener, KeyL
 		construireFenetreErreur();	
 	}
 	
+	/* Ajoute un label d'erreur a la page de login */
 	private void construireFenetreErreur()
 	{
 		log.add(lErreur);
@@ -147,7 +153,7 @@ public class Login extends JFrame implements ActionListener, FocusListener, KeyL
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 	/**
-	 * Action liées aux cliques boutons
+	 * Connexion au serveur avec les identifiants passé dans les champs 
 	 */
 	public void connect()
 	{
@@ -181,31 +187,34 @@ public class Login extends JFrame implements ActionListener, FocusListener, KeyL
             
 			try {
 				verif = in.readLine().equals("true");
+	            if(verif)
+	            {
+	                System.out.println("Je suis connecte ");
+	                Principale p = new Principale(500,500,socket,in,login);
+	    			p.setVisible(true);
+	    			this.dispose();
+	            }
+	            // Si les informations sont incorrectes
+	            else
+	            {
+	            	new Login(300,350,"erreur",socket);
+	            	this.dispose();
+	        		
+	            }
 			}
 			catch (IOException e1)
 			{e1.printStackTrace();}
 			
             // Si le serveur envoie la confirmation
-            if(verif)
-            {
-                System.out.println("Je suis connecte ");
-                Principale p = new Principale(500,500,socket,in,login);
-    			p.setVisible(true);
-    			this.dispose();
-            }
-            // Si les informations sont incorrectes
-            else
-            {
-    			this.dispose();
-    			new Principale(500,500,socket,in,login);
-        		//new Login(300,350, client, socket);
-            }
+
 		
 		logConnection = tfLogin.getText();
 		passConnection = TextPassword;
 	}
 	
-	
+	/**
+	 * Gestion des clics sur les boutons
+	 */
 	public void actionPerformed(ActionEvent e)
 	    {
 			/**
@@ -217,7 +226,7 @@ public class Login extends JFrame implements ActionListener, FocusListener, KeyL
         	 */
         	if (source == b_inscription)
         	{
-        		Inscription i = new Inscription(300,400,client,socket);
+        		Inscription i = new Inscription(300,400,socket);
         		i.setVisible(true);
         		this.setVisible(false);
         	}
@@ -227,7 +236,9 @@ public class Login extends JFrame implements ActionListener, FocusListener, KeyL
         		connect();
         	}
 	    }
-	
+	/**
+	 * Gestion du focus des TextFields, efface les valeurs par défaut en cas de focus
+	 */
 	public void focusGained(FocusEvent e) 
 	{
 		Object source=e.getSource();
@@ -247,7 +258,9 @@ public class Login extends JFrame implements ActionListener, FocusListener, KeyL
 		}
 	}
 	 
-	
+	/**
+	 * Gestion du focus des TextFields, ajoute les valeurs par défaut en cas de perte de focus sans ajout d'identifiant
+	 */
 	public void focusLost(FocusEvent e) 
 	{
 		 Object source=e.getSource();
@@ -267,6 +280,9 @@ public class Login extends JFrame implements ActionListener, FocusListener, KeyL
 	        }
 	}
 	@Override
+	/**
+	 * Gestion des touches pressées, si on presse entrée dans le TextField password on sera connecté
+	 */
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_ENTER)
 		{

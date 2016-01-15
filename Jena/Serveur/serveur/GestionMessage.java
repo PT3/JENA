@@ -2,26 +2,33 @@ package serveur;
 
 import java.io.*;
 import java.net.*;
-import java.util.Scanner;
-
+import inscri.BDD;
+/**
+ * Classe gérant les connexions et inscriptions
+ * @author esteban et Adrien
+ *
+ */
 public class GestionMessage implements Runnable
 {
     private Socket socket;		// Instance du Socket client 
     private PrintWriter out = null;     // Envoyeur
     private BufferedReader in = null;   // Receveur
     public Thread threadChat;	// Instance de la thread de chat
+    public BDD bdd;
  
-    /**
-     * Constructeur de la procÃ©dure d'GestionMessage
-     * @param socket
-     */
-    
 
+    /**
+     * Constructeur de Gestion Message
+     * @param socket d'écoute
+     */
     public GestionMessage(Socket socket)
     {
     	this.socket=socket;
+    	bdd=new BDD();
     }
-    
+    /**
+     * Réceptionne les connexions / inscriptions envoyées par les clients
+     */
     public void run()
     {
     	String login = "";
@@ -33,12 +40,20 @@ public class GestionMessage implements Runnable
 		    String pass = null;
             while(!authentifier)
             {	
-                login = in.readLine();		
-                pass = in.readLine();
-                if(isValid(login, pass))
-                {
-                    out.println("true");   
-                    System.out.println(login + " vient de se consnecter ");
+            	login = in.readLine();
+            	pass = in.readLine();
+            	if(login.equals("¤Inscription¤"))
+            	{
+            		login = pass;
+            		pass = in.readLine();
+            		String confirmPass = in.readLine();
+            		String mail= in.readLine();
+            		out.println(""+bdd.BdInscriptionConf(login, pass, confirmPass, mail));
+            		out.flush();
+            	}
+                else if(bdd.LogValid(login, pass))
+                {  
+                    out.println("true");
                     out.flush();
                     authentifier = true;
                 }
@@ -58,41 +73,5 @@ public class GestionMessage implements Runnable
         
         	System.err.println(login + " ne rÃ©pond pas !");
         }
-    }
-
-    /**
-     * Verification des information de connexion client 
-     * @param login
-     * @param pass
-     * @return connexion			
-     */
-    private boolean isValid(String login, String pass)
-    {
-        
-        boolean connexion = false;
-        
-        try
-        {
-        
-            Scanner sc = new Scanner(new File("Serveur/serveur/login.txt"));
-            
-           
-            while(sc.hasNext())
-            {
-            
-                if(sc.nextLine().equals(login + " % " + pass))
-                {
-                    connexion = true; 	
-                    break;
-                }
-            }
-            
-        }catch (FileNotFoundException e)
-        {
-  
-        	System.err.println("Le fichier n'existe pas !");
-        }
-        
-        return connexion;
     }
 }

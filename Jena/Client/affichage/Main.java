@@ -1,13 +1,13 @@
 package affichage;
 
-import java.awt.Dimension;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import client.Client;
-import client.Connexion;
 
+
+
+/* Class Main, permet de lancer la fenêtre de connexion et de créer le lien avec le serveur*/
 public class Main 
 {
     public static Socket socket = null; // Socket local
@@ -16,7 +16,6 @@ public class Main
 
 	public static void main(String[] args) 
 	{
-		
         ip = "92.138.249.243";   // Ip du serveur
         ip = "192.168.1.15";    // Redefinition temporaire pour les tests
         ip = "localhost";       // Redefinition temporaire pour les tests
@@ -32,7 +31,6 @@ public class Main
         System.out.println("Connexion serveur est etablie");
         
         // Lancement de la thread de Connexion
-        threadConn = new Thread(new Connexion(socket));
         
 		new Login(300,300,socket);
 	}

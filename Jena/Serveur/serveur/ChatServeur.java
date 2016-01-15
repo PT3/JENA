@@ -4,7 +4,8 @@ import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 
-public class ChatServeur implements Runnable {
+public class ChatServeur implements Runnable 
+{
 
     private ArrayList<Client> user;
     private ArrayList<Thread> userThread;
@@ -14,34 +15,42 @@ public class ChatServeur implements Runnable {
     private BufferedReader in;	// Receveur
 
     
-    
-    /**
-     * Constructeur du chat d'un client
-     * @param s
-     * @param login
-     */
-    public ChatServeur(){
+    public ChatServeur()
+    {
     	user=new ArrayList<Client>();
     	userThread=new ArrayList<Thread>();
-
     }
-
+    //Singleton
     private static ChatServeur INSTANCE = new ChatServeur();
-    
+    /**
+     * Permet de passer le socket et le login 
+     * @param soc
+     * @param log
+     * @return
+     */
     public static ChatServeur getInstance(Socket soc,String log)
     {
     	socket=soc;
     	login=log;
     	return INSTANCE;
     } 
+    
+    /**
+     * Permet de retourner l'instance de ChatServeur
+     * @return
+     */
     public static ChatServeur getInstance()
     {
     	return INSTANCE;
     } 
     
+    /**
+     * Fait quitter un utilisateur
+     * @param delUser : Un utilisateur connecté 
+     */
     public void deleteUser(Client delUser)
     {
-    	int i=0;
+   
     	for(Client test:user)
     	{
     		if(delUser.getLogin()==test.getLogin())
@@ -50,8 +59,8 @@ public class ChatServeur implements Runnable {
     			{
 					delUser.getSocket().close();
 					System.out.println(delUser.getLogin()+" déconnecté");
-					user.remove(i);
-					userThread.remove(i);
+					user.remove(delUser);
+					userThread.remove(delUser);
 				} 
     			catch (IOException e) 
     			{
@@ -76,8 +85,10 @@ public class ChatServeur implements Runnable {
             out = new PrintWriter(socket.getOutputStream());
             
             user.add(new Client(login,socket,out,in));
+            
             userThread.add(new Thread(new Reception(user,user.size()-1)));
             userThread.get(userThread.size()-1).start();
+            new Emission(user,login+ " vient de se connecter").messageServ();
         }
         catch (IOException e)
         {

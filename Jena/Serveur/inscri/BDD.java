@@ -5,6 +5,11 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+/**
+ * Gestion des différentes requêtes à la base de données
+ * @author Nicolas
+ *
+ */
 public class BDD 
 {
 	public String log;
@@ -12,12 +17,20 @@ public class BDD
 	public String pass;
 	public String pass2;
 	
-	public void BdInscriptionConf(String a, String b, String c, String d) 
+	/**
+	 * Gère l'inscription d'un nouvel utilisateur
+	 * @param login
+	 * @param password
+	 * @param confirmPassword
+	 * @param mail
+	 * @return True si elle a fonctionné , sinon false
+	 */
+	public Boolean BdInscriptionConf(String login, String password, String confirmPassword, String mail) 
 	{	
-		mail = a;
-		log = b;
-		pass = c;
-		pass2 = d;
+		this.mail = mail;
+		log = login;
+		pass = password;
+		pass2 = confirmPassword;
 		
 		String url = "jdbc:mysql://localhost:3306/";
 
@@ -32,7 +45,7 @@ public class BDD
 		 * be used.
 		 */
 		String bddpassword = "";
-
+		if(pass.equals(pass)){
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			Connection con = DriverManager
@@ -63,12 +76,20 @@ public class BDD
 		catch (Exception ex) {
 			ex.printStackTrace();
 		}
+		return true;
+		}
+		return false;
 	}
 	
-	public Boolean BdSelect(String a)
+	/**
+	 * Cherche si un utilisateur est dans la BDD
+	 * @param login
+	 * @return True/False
+	 */
+	public Boolean BdSelect(String login)
 	{
 		
-		log = a;
+		log = login;
 		String url = "jdbc:mysql://localhost:3306/";
 		String user = "root";
 		String bddpassword = "";
@@ -118,6 +139,12 @@ public class BDD
 		return false;
 	}
 	
+	/**
+	 * Vérifie si les identifiants rentrées sont existants 
+	 * @param loginlog
+	 * @param pass
+	 * @return True/False
+	 */
 	public boolean LogValid(String loginlog, String pass)
 	{
 
@@ -154,6 +181,14 @@ public class BDD
 
 	}
 	
+	/**
+	 * Vérifie si les mots de passe sont égaux 
+	 * @param a
+	 * @param b
+	 * @param pass
+	 * @param pass2
+	 * @return
+	 */
 	public boolean EqualPassword(String a, String b, String pass, String pass2) 
 	{	
 		this.pass = pass;
@@ -172,6 +207,11 @@ public class BDD
 		return false;
 	}
 	
+	/**
+	 * Vérifie si les logins sont égaux
+	 * @param a
+	 * @return
+	 */
 	public boolean EqualLogin(String a)
 	{
 		String url = "jdbc:mysql://localhost:3306/";
@@ -226,7 +266,11 @@ public class BDD
 		
 
 	}
-	
+	/**
+	 * Vérifie si le mail est déjà pris 
+	 * @param a
+	 * @return
+	 */
 	public boolean EqualMail(String a)
 	{
 		String url = "jdbc:mysql://localhost:3306/";

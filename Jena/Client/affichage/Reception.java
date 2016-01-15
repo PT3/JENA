@@ -3,8 +3,10 @@ package affichage;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import client.Chat;
-
+/**
+ * Receptionne les messages du serveur
+ * @author esteban et adrien
+ */
 public class Reception implements Runnable
 {
     
@@ -14,22 +16,17 @@ public class Reception implements Runnable
     
     /**
      * Constructeur de Reception
-     * @param in
+     * @param in : Entrée des messages
+     * @param p : Fenêtre principale associée
      */
     public Reception(BufferedReader in,Principale p)
     {
         this.in = in;
         this.p=p;
     }
-    public Reception(BufferedReader in)
-    {
-        this.in = in;
-    }
-
-
     
     /**
-     * Lancement de la thread qui reçoit les messages
+     * Lancement de la thread qui re�oit les messages
      */
     public void run()
     {
@@ -40,7 +37,7 @@ public class Reception implements Runnable
                 message = in.readLine();        // Reception du message
                 if(message.equals("quit"))
                 {
-                	Chat.getInstance().quit();
+                	System.exit(0);
                 }
                 System.out.println(message);
                 p.reception(message);
