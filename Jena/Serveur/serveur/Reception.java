@@ -50,14 +50,17 @@ public class Reception implements Runnable {
 	                String admin=user.get(i).getLogin();
 	                if (cmd[0].equals("/kick"))
 	                {
-	                	for(Client kickUser:user)
+	                	for(int k=0;k<user.size();k++)
 	                	{
-	                		if(cmd[1].equalsIgnoreCase(kickUser.getLogin()) && !(admin.equals(kickUser.getLogin())))
-	                			System.out.println(kickUser.getLogin());
-		            			kickUser.getWriter().println("quit");
-		            			kickUser.getWriter().flush();
-		            			new Emission(user,kickUser.getLogin()+" a été kické").messageServ();
-			                	ChatServeur.getInstance().deleteUser(kickUser);
+	                		String kTest=(String) cmd[1];
+	                		String uTest=(String) user.get(k).getLogin();
+	                		if(kTest.equalsIgnoreCase(uTest))
+	                		{
+	                			user.get(k).getWriter().println("quit");
+	                			user.get(k).getWriter().flush();
+		            			new Emission(user,uTest+" a été kické").messageServ();
+			                	ChatServeur.getInstance().deleteUser(user.get(k));
+	                		}
 		                	
 	                	}
 	                }
