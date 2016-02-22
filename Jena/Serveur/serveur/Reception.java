@@ -24,6 +24,16 @@ public class Reception implements Runnable {
     	this.i=i;
     }
 
+	/**
+	 * Transforme un String en Message, les parties doivent être séparées par un ¤
+	 * @param in
+	 * @return
+	 */
+	public Message fromString(String in)
+	{
+	 	String[] tmp = in.split("¤");
+	 	return new Message(tmp);
+	}
     
     /**
      * Lancement de la thread qui reçoit et renvoie les messages client
@@ -37,42 +47,71 @@ public class Reception implements Runnable {
         		while(true)
         		{
 	                message = user.get(i).getBuffer().readLine();	// Receptionne la saisi du client
-	                String test=message;
-	                System.out.println(test);
-	                if (message.equals("/quit"))
+	                Message msg=fromString(message);
+	                System.out.println(msg.getType());
+	                switch(msg.getType())
 	                {
-            			user.get(i).getWriter().println("quit");
-            			user.get(i).getWriter().flush();
-	                	ChatServeur.getInstance().deleteUser(user.get(i));
-	                }
-	                String[] cmd;
-	                cmd=message.split(" ");
-	                String admin=user.get(i).getLogin();
-	                if (cmd[0].equals("/kick"))
-	                {
-	                	for(int k=0;k<user.size();k++)
-	                	{
-	                		String kTest=(String) cmd[1];
-	                		String uTest=(String) user.get(k).getLogin();
-	                		if(kTest.equalsIgnoreCase(uTest))
-	                		{
-	                			user.get(k).getWriter().println("quit");
-	                			user.get(k).getWriter().flush();
-		            			new Emission(user,uTest+" a été kické").messageServ();
-			                	ChatServeur.getInstance().deleteUser(user.get(k));
-	                		}
+		                case "quit":
+		                	user.get(i).getWriter().println("quit");
+	            			user.get(i).getWriter().flush();
+		                	ChatServeur.getInstance().deleteUser(user.get(i));
+		                	break;
 		                	
-	                	}
-	                }
-	                else
-	                {
-	                    message = user.get(i).getLogin() + " : " + message;
+		                case "message":
+		                	msg.setContent(msg.getSender()+" : "+msg.getContent());
 	                    	for(int j=0;j<user.size();j++)
 	                    	{
-	                    			user.get(j).getWriter().println(message);
-	                    			user.get(j).getWriter().flush();
+	                			user.get(j).getWriter().println(msg.getContent());
+	                			user.get(j).getWriter().flush();
 	                    	}
+		                    break;
+		                    
+		                case "kick":
+		                	for(int k=0;k<user.size();k++)
+		                	{
+		                		String kTest=msg.getRecipient();
+		                		String uTest=(String) user.get(k).getLogin();
+		                		if(kTest.equalsIgnoreCase(uTest))
+		                		{
+		                			user.get(k).getWriter().println("quit");
+		                			user.get(k).getWriter().flush();
+			            			new Emission(user,uTest+" a été kické").messageServ();
+				                	ChatServeur.getInstance().deleteUser(user.get(k));
+		                		}
+		                	}
+		                	break;
+		                	
+		                case "pm":
+		                	msg.setContent("PM from "+msg.getSender()+" : "+msg.getContent());
+		                	for(int k=0;k<user.size();k++)
+		                	{
+		                		String kTest=msg.getRecipient();
+		                		String uTest=(String) user.get(k).getLogin();
+		                		if(kTest.equalsIgnoreCase(uTest))
+		                		{
+		                			user.get(k).getWriter().println(msg.getContent());
+		                			user.get(k).getWriter().flush();
+		                		}
+		                	}
+		                	break;
+		                	
+		                case "ban":
+		                	for(int k=0;k<user.size();k++)
+		                	{
+		                		String kTest=msg.getRecipient();
+		                		String uTest=(String) user.get(k).getLogin();
+		                		if(kTest.equalsIgnoreCase(uTest))
+		                		{
+		                			user.get(k).getWriter().println("quit");
+		                			user.get(k).getWriter().flush();
+			            			new Emission(user,uTest+" a été kické").messageServ();
+				                	ChatServeur.getInstance().deleteUser(user.get(k));
+		                		}
+		                	}
+		                	break;
 	                }
+	                
+	             
         		}
             }
         	catch (IOException e)

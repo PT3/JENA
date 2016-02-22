@@ -62,6 +62,11 @@ public class Message
 		return content;
 	}
 	
+	public void setContent(String msg)
+	{
+		this.content=msg;
+	}
+	
 	/**
 	 * Renvoie le destinataire
 	 * @return (String)Destination du Message
@@ -70,21 +75,12 @@ public class Message
 	{
 		return recipient;
 	}
-	/**
-	 * Transforme un String en Message, les parties doivent être séparées par un ¤
-	 * @param in
-	 * @return
-	 */
-	public Message FromString(String in)
-	{
-	 	String[] tmp = in.split("¤");
-	 	return new Message(tmp);
-	}
+
 	/**
 	 * Transforme un Message en String
 	 */
 	public String toString()
 	{
-		return (type+"Â¤"+sender+"Â¤"+content+"Â¤"+recipient);
+		return (type+"¤"+sender+"¤"+content+"¤"+recipient);
 	}
 }

@@ -20,7 +20,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import javax.swing.*;
 
-import affichage.Message;
+import affichage.AffichageMessage;
 
 
 /**
@@ -191,21 +191,49 @@ public class Principale extends JFrame implements ActionListener , KeyListener
    // Envoyeur
 			    
 		        // Initialisation de l'envoyeur
-		        try {
+		        try 
+		        {
 					out = new PrintWriter(socket.getOutputStream());
 				} 
 		        catch (IOException e2) 
-		        {e2.printStackTrace();}
+		        {
+		        	e2.printStackTrace();
+		        }
 		        
 		        // Initialisation du receveur
-		        try {
+		        try 
+		        {
 					in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-					} 
+				} 
 		        catch (IOException e2)
-		        	{e2.printStackTrace();}
-
-		            out.println(userText.getText());     // Saisi du login et placer dans le buffer
-		            out.flush();        				
+		        {
+		        	e2.printStackTrace();
+			    }
+		        String[] cmd;
+		        String msg=userText.getText();
+                cmd=msg.split(" ");
+                Message message=null;
+                switch((String)cmd[0])
+                {
+	                case "/quit":
+	                	message=new Message("quit",logUser," "," ");
+	                	break;
+	                case "/kick":
+	                	message=new Message("kick",logUser," ",cmd[1]);
+	                	break;
+	                case "/ban":
+	                	message=new Message("ban",logUser," ",cmd[1]);
+	                	break;
+	                case "/pm":
+	                	msg=msg.replaceFirst(cmd[0]+" "+cmd[1],"");
+	                	message=new Message("pm",logUser,msg,cmd[1]);
+	                	break;
+	                default:
+	                	message=new Message("message",logUser,msg," ");
+	                	break;
+                }
+	            out.println(message.toString());     // Saisi du login et placer dans le buffer
+	            out.flush();        				
 				userText.setText("");
 				e.consume();
 			}
@@ -240,20 +268,20 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 	{
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridwidth = c.REMAINDER;
-		Message m  = null;
+		AffichageMessage m  = null;
 		JScrollBar sb = chatScroll.getVerticalScrollBar();
 		sb.setValue(sb.getMaximum());
 		String test[]= message.split(" ");
 		if (test[0].equals(logUser))
 		{
-			m = new Message(message,color.getColor(),500,new Color(136,206,227));
+			m = new AffichageMessage(message,color.getColor(),500,new Color(136,206,227));
 			System.out.println(message);
 			c.insets=c1;
 			testAlternance = false;
 		}
 		else
 		{
-			m=new Message(message,color.getColor(),500,new Color(236,158,255));
+			m=new AffichageMessage(message,color.getColor(),500,new Color(236,158,255));
 			c.insets=c2;
 			testAlternance = true;
 		}

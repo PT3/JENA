@@ -1,184 +1,90 @@
 package affichage;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.util.ArrayList;
-
-import javax.swing.*;
-
 /**
- * Classe qui gère l'affichage des messages dans la fenêtre Principale
- * @author Julien
+ * Classe qui servira à normaliser les échanges 
+ * @author esteban
  *
  */
-public class Message extends JPanel
+public class Message
 {
-	private String texte;
-	private int x,y;
-	private Color color;
-	private ArrayList<String> listMessages;
-	private ArrayList<String> listSmiley;
-	private ArrayList<String> listImages;
-	private  ArrayList<Integer> list;
-	private Color colorBack;
-	
+	private String type;// Can be sign in , sign up , message
+	private String sender;//Username
+	private String content;//Message, password or registration information separated by Â§
+	private String recipient;//SERVER or recipient for PM 
+
 	/**
-	 * Constructeur d'un Message
-	 * @param message : contenu du message
-	 * @param colorText : Couleur du texte
-	 * @param largeur : Largeur du message 
-	 * @param colorFond: Couleur de fond du message
-	 */
-	public Message(String message, Color colorText,int largeur,Color colorFond)
+	*Create a new message , it will be send and treated by the server, please verify that param aren't empty !
+	*@param type // Can be sign in , sign up , message
+	*@param sender //Sender Username
+	*@param content //Message, password or registration information separated by Â§
+	*@param recipient //SERVER or recipient for PM 
+	*/
+	public Message(String type,String sender,String content,String recipient)
 	{
-		colorBack = colorFond;
-		texte = message;
-		color = colorText;
-		listMessages = new ArrayList<String>();
-		listSmiley = new ArrayList<String>();
-		listImages = new ArrayList<String>();
-		this.list=list;
-		remplissageListeSmiley();
-		remplissageListeImages();
-		listMessages.add(texte);
-		x = largeur;
-		y = listMessages.size()*20;
-		setPreferredSize(new Dimension(x,y));
-		
-	//Effectue la séparation entre tout les retours à la ligne dans un message 
-		
-	}
-	/**
-	 * Retourne la hauteur
-	 * @return y: Hauteur
-	 */
-	public int getHeight()
-	{
-		return y;
+		this.type=type;
+		this.sender=sender;
+		this.content=content;
+		this.recipient=recipient;
 	}
 	
 	/**
-	 * Retourne la largeur
-	 * @return y: Largeur
+	 * Crée un message à partir d'un tableau contenant Type,Envoyeur,Contenu,Destinataire
+	 * @param tab (String[])
 	 */
-	public int getWidth()
+	public Message(String[] tab)
 	{
-		return x;
+		this(tab[0],tab[1],tab[2],tab[3]);
+	}
+	/**
+	 * Renvoie le type du Message (Kick, Message,Connexion....)
+	 * @return (String) Type du message
+	 */
+	public String getType()
+	{
+		return type;
 	}
 	
 	/**
-	 * Associe à listImages des smileys 
+	 * Renvoie l'envoyeur du message
+	 * @return (String) Envoyeur
 	 */
-	private void remplissageListeImages() 
+	public String getSender()
 	{
-		listImages.add(".\\ImageSmileys\\barbouille.png");
-		listImages.add(".\\ImageSmileys\\complice.png");
-		listImages.add(".\\ImageSmileys\\content.png");
-		listImages.add(".\\ImageSmileys\\happy.png");
-		listImages.add(".\\ImageSmileys\\class.png");
-		listImages.add(".\\ImageSmileys\\deter.png");
-		listImages.add(".\\ImageSmileys\\etonn.png");
-		listImages.add(".\\ImageSmileys\\indiff.png");
-		listImages.add(".\\ImageSmileys\\langue.png");
-		listImages.add(".\\ImageSmileys\\peur.png");
-		listImages.add(".\\ImageSmileys\\pleure.png");
-		listImages.add(".\\ImageSmileys\\stup.png");
-		listImages.add(".\\ImageSmileys\\triste.png");
+		return sender;
 	}
-
+	
 	/**
-	 * Associe à ListeSmiley les Smileys gérés par le chat
+	 * Renvoie le contenu du Message
+	 * @return (String) Contenu du Message
 	 */
-	private void remplissageListeSmiley()
+	public String getContent()
 	{
-		listSmiley.add(":S");
-		listSmiley.add(";)");
-		listSmiley.add(":)");
-		listSmiley.add(":D");
-		listSmiley.add("é_è");
-		listSmiley.add(":è_é");
-		listSmiley.add("o_o");
-		listSmiley.add(":X");
-		listSmiley.add(":P");
-		listSmiley.add(":'");
-		listSmiley.add(":O");
-		listSmiley.add(":t_t");
-		listSmiley.add(":o");
-		listSmiley.add(":(");
+		return content;
 	}
-
+	
 	/**
-	 * Dessin du message
+	 * Renvoie le destinataire
+	 * @return (String)Destination du Message
 	 */
-	public void paintComponent(Graphics g)
+	public String getRecipient()
 	{
-		//Set la couler de fond
-		g.setColor(colorBack);
-		//Dessine le fond
-		g.fillRect(0, 0, x, y);
-
-		g.setColor(color);
-		//Variable qui va contenir la taille en largeur des caractere avant un smiley
-		int taille= 0;
-		
-		//Parcour lignes apres lignes du message
-		for (int i = 0; i < listMessages.size(); i++) 
-		{
-			String m = listMessages.get(i);
-			
-			//Decoupe le message avec comme séparateur les espaces pour les stocker dans un tableau.
-			String[] tab = m.split(" ");
-			
-			//Variable stockant un texte avant un smiley
-			String avant = "";
-			taille = 0;
-			
-			//Booleen permettant de dire si au moins un smiley est présent ou non dans la ligne de texte 
-			boolean testImage = false;
-			//Parcour tout les mot d'une ligne
-			for (int j = 0; j < tab.length; j++) 
-			{
-				//Variable pour savoir si on détecte un smiley
-				boolean test  = false;
-				
-				//Recupere la position du smiley dans le tableau de mot
-				int index = 0;
-				
-				//Parcour la liste des smiley enregistrer 
-				for (int j2 = 0; j2 < listSmiley.size(); j2++)
-				{
-					
-					//test pour savoir si le mot courant est un smiley
-					if(tab[j].equals(listSmiley.get(j2)))
-					{
-						test = true;
-						index = j2;
-					}
-				}
-				
-				//Si c'est un smiley on va ecrire le txet avant le smiley et apres l'image du smiley
-				if (test)
-				{
-					Image im = getToolkit().getImage(listImages.get(index));
-					g.drawString(avant, 5+taille, 15+20*i);
-					g.drawImage(im, (int)(taille+avant.length()*5+5),20*i,20,20, null);
-					testImage = true;
-					
-					taille = avant.length()*5+25;
-					avant= "";
-				}
-				else
-				{
-					avant += tab[j]+" ";
-				}
-			}
-			
-			//Si la ligne ne comporte pas de smiley on dessine simplement le texte.
-			if (!testImage)
-				g.drawString(listMessages.get(i), 5, 15+20*i);
-			
-		}
+		return recipient;
+	}
+	/**
+	 * Transforme un String en Message, les parties doivent être séparées par un ¤
+	 * @param in
+	 * @return
+	 */
+	public Message fromString(String in)
+	{
+	 	String[] tmp = in.split("¤");
+	 	return new Message(tmp);
+	}
+	/**
+	 * Transforme un Message en String
+	 */
+	public String toString()
+	{
+		return (type+"¤"+sender+"¤"+content+"¤"+recipient);
 	}
 }
