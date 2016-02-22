@@ -82,15 +82,16 @@ public class Reception implements Runnable {
 		                	break;
 		                	
 		                case "pm":
-		                	msg.setContent("PM from "+msg.getSender()+" : "+msg.getContent());
 		                	for(int k=0;k<user.size();k++)
 		                	{
 		                		String kTest=msg.getRecipient();
 		                		String uTest=(String) user.get(k).getLogin();
 		                		if(kTest.equalsIgnoreCase(uTest))
 		                		{
-		                			user.get(k).getWriter().println(msg.getContent());
+		                			user.get(k).getWriter().println("PM from "+msg.getSender()+" : "+msg.getContent());
 		                			user.get(k).getWriter().flush();
+		                			user.get(i).getWriter().println("To "+msg.getRecipient()+" : "+msg.getContent());
+		                			user.get(i).getWriter().flush();
 		                		}
 		                	}
 		                	break;

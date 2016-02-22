@@ -272,7 +272,7 @@ public class Principale extends JFrame implements ActionListener , KeyListener
 		JScrollBar sb = chatScroll.getVerticalScrollBar();
 		sb.setValue(sb.getMaximum());
 		String test[]= message.split(" ");
-		if (test[0].equals(logUser))
+		if (test[0].equals(logUser) || test[0].equals("To"))
 		{
 			m = new AffichageMessage(message,color.getColor(),500,new Color(136,206,227));
 			System.out.println(message);
